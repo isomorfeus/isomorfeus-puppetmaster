@@ -10,8 +10,10 @@ blocks:
         - name: Ruby
           commands:
             - nvm install 11.12.0
+            - nvm uninstall 8.11.3
             - nvm alias default 11.12.0
             - nvm use 11.12.0
+            - apt-get purge nodejs
             - nvm ls
             - which yarn
             - ls -l /usr/bin
