@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.5.5-stretch-node
+      - image: circleci/ruby:2.5.5-stretch-node-browsers
     steps:
       - checkout
       - run:
