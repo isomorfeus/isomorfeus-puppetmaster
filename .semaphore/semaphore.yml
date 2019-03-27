@@ -1,0 +1,14 @@
+agent:
+  os_image: ubuntu1804
+blocks:
+  - name: "Run ruby tests"
+    task:
+      jobs:
+        - name: Ruby
+          commands:
+            - nvm install 10.15.3
+            - sem version ruby 2.5.3
+            - checkout
+            - cd ruby
+            - bundle install
+            - bundle exec rake
