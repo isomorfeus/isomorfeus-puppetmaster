@@ -642,7 +642,7 @@ module DriverSpec
     it 'sets a date via keystrokes' do
       skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       input = @doc.find('#date_field')
-      input.type_keys :arrow_left, :arrow_left, '14022016'
+      input.type_keys :arrow_left, :arrow_left, '02142016'
       expect(input.value).to eq('2016-02-14')
     end
   end

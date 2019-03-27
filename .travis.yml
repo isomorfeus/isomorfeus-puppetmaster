@@ -5,4 +5,4 @@ gemfile: ruby/Gemfile
 script: cd ruby; bundle exec rake
 before_install: nvm install 10.15.3
 env:
-  - LC_ALL=de_DE.UTF-8
+  - LC_ALL=en_US.UTF-8
