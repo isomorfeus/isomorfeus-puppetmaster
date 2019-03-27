@@ -173,11 +173,13 @@ module Isomorfeus
                   end
           end
           result = @context.eval "AllDomHandles[#{document.handle}].cookieJar.getCookiesSync('#{uri.to_s}')"
-          result.to_h do |cookie|
+          result_hash = {}
+          result.each do |cookie|
             cookie['name'] = cookie['key']
             cookie['expires'] = DateTime.parse(cookie['expires']).to_time if cookie.has_key?('expires')
-            [cookie['name'], Isomorfeus::Puppetmaster::Cookie.new(cookie)]
+            result_hash[cookie['name']] = Isomorfeus::Puppetmaster::Cookie.new(cookie)
           end
+          result_hash
         end
 
         def document_dismiss_confirm(document, **options, &block)
