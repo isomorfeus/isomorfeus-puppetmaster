@@ -12,6 +12,10 @@ blocks:
             - nvm install 11.12.0
             - nvm alias default 11.12.0
             - nvm use 11.12.0
+            - nvm ls
+            - which yarn
+            - ls -l /usr/bin
+            - ls -l /usr/local/bin
             - export PATH=/home/semaphore/.nvm/versions/node/v10.15.3/bin/:$PATH
             - sem-version ruby 2.5.3
             - checkout
