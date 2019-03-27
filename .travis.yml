@@ -1,3 +1,4 @@
 lanugage: ruby
 rvm: 2.6.2
 gemfile: ruby/Gemfile
+script: `cd ruby; bundle exec rake`
