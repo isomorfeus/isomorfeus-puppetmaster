@@ -197,7 +197,7 @@ module Isomorfeus
         def document_cookies(document)
           result = await("LastResult = await AllPageHandles[#{document.handle}].cookies();")
           result_hash = {}
-          result.to_h { |cookie| result_hash[cookie['name']] = Isomorfeus::Puppetmaster::Cookie.new(cookie) }
+          result.each { |cookie| result_hash[cookie['name']] = Isomorfeus::Puppetmaster::Cookie.new(cookie) }
           result_hash
         end
 
