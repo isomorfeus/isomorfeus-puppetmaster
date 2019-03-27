@@ -70,6 +70,7 @@ module DriverSpec
       # text in some browser configurations if the document contains characters from outside the US-ASCII range.
       # The character encoding of the page must be declared in the document or in the transfer protocol."
       # {file: "https://expired.badssl.com/" line: 0}]
+      # maybe a node 10.15.3 issue vs node 11
       Isomorfeus::Puppetmaster.register_driver :firefox_allow_ssl do |app|
         Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :firefox, headless: true, app: app, ignore_https_errors: true)
       end
