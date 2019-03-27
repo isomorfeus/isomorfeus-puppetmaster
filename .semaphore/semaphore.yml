@@ -14,6 +14,5 @@ blocks:
             - checkout
             - cd ruby
             - bundle install
-            - node -v
-            - which node
+            - export PATH=/home/semaphore/.nvm/versions/node/v10.15.3/bin/:$PATH
             - bundle exec rake
