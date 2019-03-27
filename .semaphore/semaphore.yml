@@ -9,10 +9,14 @@ blocks:
       jobs:
         - name: Ruby
           commands:
+            - which node
+            - node -v
             - nvm install 10.15.3
             - export PATH=/home/semaphore/.nvm/versions/node/v10.15.3/bin/:$PATH
             - sem-version ruby 2.5.3
             - checkout
             - cd ruby
             - bundle install
+            - which node
+            - node -v
             - bundle exec rake
