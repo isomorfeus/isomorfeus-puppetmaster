@@ -7,6 +7,7 @@ jobs:
       - run:
           name: Run ruby test
           command: |
+            ls -al
             cd ruby
             bundle install
             bundle exec rake
