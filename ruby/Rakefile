@@ -7,7 +7,20 @@ task :bench do
   # sh 'ruby -Ilib -r./test/shim test/bench.rb'
 end
 
+task :setup do
+  unless Dir.exist?('node_modules/puppeteer') &&
+     Dir.exist?('node_modules/puppeteer-firefox') &&
+     Dir.exist?('node_modules/jsdom') &&
+     Dir.exist?('node_modules/canvas')
+    `yarn add puppeteer@1.13.0`
+    `yarn add puppeteer-firefox@0.5.0`
+    `yarn add jsdom@14.0.0`
+    `yarn add canvas@2.4.1`
+  end
+end
+
 RSpec::Core::RakeTask.new(:test) do |t|
+  Rake::Task[:setup].invoke
   t.pattern = Dir.glob('spec/drivers/*_spec.rb')
 #  t.rspec_opts = '--format documentation'
 # t.rspec_opts << ' more options'
@@ -15,6 +28,7 @@ RSpec::Core::RakeTask.new(:test) do |t|
 end
 
 RSpec::Core::RakeTask.new(:fail) do |t|
+  Rake::Task[:setup].invoke
   t.pattern = Dir.glob('spec/drivers/*_spec.rb')
   t.rspec_opts = '--format documentation --fail-fast'
 # t.rspec_opts << ' more options'
