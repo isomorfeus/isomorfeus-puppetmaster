@@ -1,7 +1,8 @@
 version: 2.1
 jobs:
   build:
-    machine: ubuntu-1604:201903-01
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
       - run:
           name: Run ruby test
