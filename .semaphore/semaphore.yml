@@ -1,6 +1,7 @@
 version: 'v1.0'
 agent:
-  os_image: ubuntu1804
+  machine:
+    os_image: ubuntu1804
 blocks:
   - name: "Run ruby tests"
     task:
