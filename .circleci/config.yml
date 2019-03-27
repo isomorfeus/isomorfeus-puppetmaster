@@ -1,14 +1,15 @@
 version: 2.1
 jobs:
   build:
-    machine:
-      image: ubuntu-1604:201903-01
+    docker:
+      image: circleci/ruby:2.5.5
     steps:
       - checkout
       - run:
           name: Run ruby test
           command: |
-            ls -al
+            ruby -v
+            node -v
             cd ruby
             bundle install
             bundle exec rake
