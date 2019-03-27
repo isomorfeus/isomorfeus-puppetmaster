@@ -43,7 +43,7 @@ module DriverSpec
     it 'url_blacklists can be configured in the driver' do
       skip 'need custom ResourceLoader'
       Isomorfeus::Puppetmaster.register_driver :jsdom_blacklist do |app|
-        Isomorfeus::Puppetmaster::Jsdom.new(app: app, url_blacklist: ['unwanted'])
+        Isomorfeus::Puppetmaster::Driver::Jsdom.new(app: app, url_blacklist: ['unwanted'])
       end
 
       session = new_session(Isomorfeus::Puppetmaster.served_app, :jsdom_blacklist)
@@ -57,7 +57,7 @@ module DriverSpec
 
     it 'HTTPS errors can be ignored by default' do
       Isomorfeus::Puppetmaster.register_driver :jsdom_allow_ssl do |app|
-        Isomorfeus::Puppetmaster::Jsdom.new(app: app, ignore_https_errors: true)
+        Isomorfeus::Puppetmaster::Driver::Jsdom.new(app: app, ignore_https_errors: true)
       end
       session = new_session(Isomorfeus::Puppetmaster.served_app, :jsdom_allow_ssl)
       doc = session.default_document
@@ -67,7 +67,7 @@ module DriverSpec
 
     it 'viewport allows for custom maximization size' do
       Isomorfeus::Puppetmaster.register_driver :jsdom_with_custom_max_size do |app|
-        Isomorfeus::Puppetmaster::Jsdom.new(app: app, max_width: 800, max_height: 600)
+        Isomorfeus::Puppetmaster::Driver::Jsdom.new(app: app, max_width: 800, max_height: 600)
       end
       session = new_session(Isomorfeus::Puppetmaster.served_app, :jsdom_with_custom_max_size)
       doc = session.default_document

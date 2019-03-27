@@ -1047,8 +1047,7 @@ module PuppetmasterSpec
       end
     end
 
-    context 'supports accessing element attributes' do
-      # TODO get_property
+    context 'supports accessing element properties' do
       before do
         @doc.visit '/puppetmaster/attributes_properties'
       end
@@ -1061,8 +1060,8 @@ module PuppetmasterSpec
         expect(@doc.find('.some_other_class').html).to eq '<div class="some_other_class"><p>foobar</p></div>'
       end
 
-      it 'gets non existent attribute' do
-        expect(@doc.find('.some_other_class')['does_not_exist']).to eq nil
+      it 'gets non existent property' do
+        expect(@doc.find('.some_other_class').get_property('does_not_exist')).to eq nil
       end
     end
 

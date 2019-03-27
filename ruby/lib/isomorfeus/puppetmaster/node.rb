@@ -67,11 +67,8 @@ module Isomorfeus
         find_all_xpath
         find_xpath
         focus
-        get_attribute
         hover
-        html
         in_viewport?
-        inner_html
         render_base64
         right_click
         save_screenshot
@@ -133,11 +130,24 @@ module Isomorfeus
       end
 
       def [](attribute)
-        @driver.node_get_attribute(self, attribute)
+        get_attribute(attribute)
       end
 
       def ==(other)
         @driver.node_equal(self, other)
+      end
+
+      def get_attribute(attribute)
+        attribute = attribute.to_s
+        if !(attribute.start_with?('aria-') || attribute.start_with?('data-'))
+          attribute = attribute.camelize(:lower)
+        end
+        @driver.node_get_attribute(self, attribute)
+      end
+
+      def get_property(property)
+        property = property.to_s.camelize(:lower)
+        @driver.node_get_property(self, property)
       end
 
       def has_content?(content, **options)
@@ -162,6 +172,14 @@ module Isomorfeus
         return false unless res
         return false if options.has_key?(:count) && options[:count] != res.size
         return true
+      end
+
+      def html
+        get_property(:outerHTML)
+      end
+
+      def inner_html
+        get_property(:innerHTML)
       end
 
       def method_missing(name, *args)

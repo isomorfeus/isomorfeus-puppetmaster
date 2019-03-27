@@ -50,7 +50,7 @@ module DriverSpec
     it 'url_blacklists can be configured in the driver' do
       skip 'doesnt seem to work'
       Isomorfeus::Puppetmaster.register_driver :chromium_blacklist do |app|
-        Isomorfeus::Puppetmaster::Puppeteer.new(browser_type: :chromium, headless: true, app: app, url_blacklist: ['unwanted'])
+        Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :chromium, headless: true, app: app, url_blacklist: ['unwanted'])
       end
 
       session = new_session(Isomorfeus::Puppetmaster.served_app, :chromium_blacklist)
@@ -64,7 +64,7 @@ module DriverSpec
 
     it 'HTTPS errors can be ignored by default' do
       Isomorfeus::Puppetmaster.register_driver :chromium_allow_ssl do |app|
-        Isomorfeus::Puppetmaster::Puppeteer.new(browser_type: :chromium, headless: true, app: app, ignore_https_errors: true)
+        Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :chromium, headless: true, app: app, ignore_https_errors: true)
       end
       session = new_session(Isomorfeus::Puppetmaster.served_app, :chromium_allow_ssl)
       doc = session.default_document
@@ -74,7 +74,7 @@ module DriverSpec
 
     it 'viewport allows for custom maximization size' do
       Isomorfeus::Puppetmaster.register_driver :chromium_with_custom_max_size do |app|
-        Isomorfeus::Puppetmaster::Puppeteer.new(browser_type: :chromium, headless: true, app: app, max_width: 800, max_height: 600)
+        Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :chromium, headless: true, app: app, max_width: 800, max_height: 600)
       end
       session = new_session(Isomorfeus::Puppetmaster.served_app, :chromium_with_custom_max_size)
       doc = session.default_document
