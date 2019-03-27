@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'os'
   s.add_development_dependency 'pdf-reader', '>= 1.3.3'
   s.add_development_dependency 'puma', '3.12.0'
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.6'
   s.add_development_dependency 'sinatra', '~> 2.0'
 end

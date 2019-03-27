@@ -9,6 +9,7 @@ require 'os'
 module DriverSpec
   describe 'firefox' do
     before :all do
+      warn "\nDriver: puppeteer firefox\n"
       Isomorfeus::Puppetmaster.app = TestApp
       Isomorfeus::Puppetmaster.boot_app
       Isomorfeus::Puppetmaster.driver = :firefox

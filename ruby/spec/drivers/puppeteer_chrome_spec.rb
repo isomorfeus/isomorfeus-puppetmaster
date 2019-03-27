@@ -9,6 +9,7 @@ require 'os'
 module DriverSpec
   describe 'chromium' do
     before :all do
+      warn "\nDriver: puppeteer chromium\n"
       Isomorfeus::Puppetmaster.app = TestApp
       Isomorfeus::Puppetmaster.boot_app
       Isomorfeus::Puppetmaster.driver = :chromium

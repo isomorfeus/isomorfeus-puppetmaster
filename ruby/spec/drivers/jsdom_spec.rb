@@ -9,6 +9,7 @@ require 'os'
 module DriverSpec
   describe 'jsdom' do
     before :all do
+      warn "\nDriver: jsdom\n"
       Isomorfeus::Puppetmaster.app = TestApp
       Isomorfeus::Puppetmaster.boot_app
       Isomorfeus::Puppetmaster.driver = :jsdom

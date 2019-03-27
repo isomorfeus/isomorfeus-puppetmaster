@@ -1,0 +1,25 @@
+require "bundler/gem_tasks"
+require "rake/testtask"
+require 'rspec/core/rake_task'
+
+task :bench do
+  # todo
+  # sh 'ruby -Ilib -r./test/shim test/bench.rb'
+end
+
+RSpec::Core::RakeTask.new(:test) do |t|
+  t.pattern = Dir.glob('spec/drivers/*_spec.rb')
+#  t.rspec_opts = '--format documentation'
+# t.rspec_opts << ' more options'
+#  t.rcov = true
+end
+
+RSpec::Core::RakeTask.new(:fail) do |t|
+  t.pattern = Dir.glob('spec/drivers/*_spec.rb')
+  t.rspec_opts = '--format documentation --fail-fast'
+# t.rspec_opts << ' more options'
+#  t.rcov = true
+end
+
+task :default => :test
+

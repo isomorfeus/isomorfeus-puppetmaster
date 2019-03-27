@@ -65,6 +65,7 @@ module PuppetmasterSpec
     end
 
     it 'synchronises page loads properly' do
+      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       @doc.visit '/puppetmaster/index'
       @doc.find_by_content('JS redirect').click
       expect(@doc.html).to include('Hello world')
