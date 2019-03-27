@@ -1,7 +1,7 @@
 # isomorfeus-puppetmaster
 
 Currently there is a Opal/Ruby implementation:
-[Ruby Readme](https://github.com/isomorfeus/isomorfeus-speednode/tree/master/ruby)
+[Ruby Readme](https://github.com/isomorfeus/isomorfeus-puppetmaster/tree/master/ruby)
 
 ## Chat
 At our [Gitter Isomorfeus Lobby](http://gitter.im/isomorfeus/Lobby) 
