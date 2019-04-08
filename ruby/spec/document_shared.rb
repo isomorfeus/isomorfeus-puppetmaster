@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-# require 'spec_helper'
-
-skip = []
-# Isomorfeus::Puppetmaster::SpecHelper.run_specs TestSessions::Puppetmaster, 'Puppetmaster', capybara_skip: skip
-
 module PuppetmasterSpec
   shared_examples 'document and node extra enhanced' do
     before do
