@@ -586,7 +586,7 @@ module Isomorfeus
             if (!(BrowserType === 'firefox')) {
               var new_target = new_page.target();
               var cdp_session = await new_target.createCDPSession();
-              await cdp_session.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: '#{Isomorfeus::Puppetmaster.save_path}'});
+              await cdp_session.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: '#{Isomorfeus::Puppetmaster.download_path}'});
               if (#{@url_blacklist}.length > 0) { await cdp_session.send('Network.setBlockedURLs', {urls: #{@url_blacklist}}); }
               await cdp_session.detach();
             }
