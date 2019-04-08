@@ -26,6 +26,7 @@ module DriverSpec
     it_behaves_like 'document and node enhanced'
     it_behaves_like '#find'
     it_behaves_like '#find enhanced'
+    it_behaves_like '#evaluate_script'
 
     # it_behaves_like 'console'
     it_behaves_like 'scrolling'
