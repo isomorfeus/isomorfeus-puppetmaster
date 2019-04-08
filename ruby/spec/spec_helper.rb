@@ -16,15 +16,15 @@ require 'nokogiri'
 require 'test_app'
 require 'drivers/drivers_shared'
 require 'document_shared'
+require 'evaluate_script_shared'
 
-Isomorfeus::Puppetmaster.save_path = File.join(Dir.pwd, 'save_path_tmp')
+Isomorfeus::Puppetmaster.download_path = File.join(Dir.pwd, 'download_path_tmp')
 
 module Isomorfeus
   module Puppetmaster
     module SpecHelper
       class << self
         def configure(config)
-          config.filter_run_excluding requires: method(:filter).to_proc
           config.before { Isomorfeus::Puppetmaster::SpecHelper.reset! }
           config.after { Isomorfeus::Puppetmaster::SpecHelper.reset! }
           config.shared_context_metadata_behavior = :apply_to_host_groups
@@ -35,16 +35,6 @@ module Isomorfeus
           Isomorfeus::Puppetmaster.host = nil
         end
 
-        def filter(requires, metadata)
-          if requires && metadata[:capybara_skip]
-            requires.any? do |require|
-              metadata[:capybara_skip].include?(require)
-            end
-          else
-            false
-          end
-        end
-
         def spec(name, *options, &block)
           @specs ||= []
           @specs << [name, options, block]
@@ -52,7 +42,7 @@ module Isomorfeus
 
         def run_specs(session, name, **options, &filter_block)
           specs = @specs
-          RSpec.describe Capybara::Session, name, options do # rubocop:disable RSpec/EmptyExampleGroup
+          RSpec.describe Isomorfeus::Puppetmaster, name, options do # rubocop:disable RSpec/EmptyExampleGroup
             include Isomorfeus::Puppetmaster::SpecHelper
             include Isomorfeus::Puppetmaster::RSpecMatchers
             # rubocop:disable RSpec/ScatteredSetup
