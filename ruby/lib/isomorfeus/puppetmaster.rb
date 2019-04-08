@@ -2,7 +2,7 @@ module Isomorfeus
   module Puppetmaster
     class << self
       attr_accessor :app, :server_port, :session
-      attr_writer :save_path, :server_host, :server_scheme
+      attr_writer :download_path, :server_host, :server_scheme
       attr_reader :served_app, :server
 
       def boot_app
@@ -30,8 +30,8 @@ module Isomorfeus
         servers[name.to_sym] = block
       end
 
-      def save_path
-        @save_path ||= Dir.pwd
+      def download_path
+        @download_path ||= Dir.pwd
       end
 
       def server=(name)
