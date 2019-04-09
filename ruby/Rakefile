@@ -12,7 +12,7 @@ task :setup do
      Dir.exist?('node_modules/puppeteer-firefox') &&
      Dir.exist?('node_modules/jsdom') &&
      Dir.exist?('node_modules/canvas')
-    `yarn add puppeteer@1.13.0`
+    `yarn add puppeteer@1.14.0`
     `yarn add puppeteer-firefox@0.5.0`
     `yarn add jsdom@14.0.0`
     `yarn add canvas@2.4.1`
