@@ -282,8 +282,8 @@ module Isomorfeus
         def document_evaluate_script(document, script, *args)
           @context.eval <<~JAVASCRIPT
             AllDomHandles[#{document.handle}].window.eval(
-              `var arguments = #{args};
-              #{script}` 
+              "var arguments = #{ "#{args}".gsub('"', '\"') };" +
+              "#{script.gsub('\\', '\\\\\\').gsub('"', '\"').gsub("\n", "\\n")}"
             )
           JAVASCRIPT
         rescue ExecJS::ProgramError => e
@@ -293,9 +293,9 @@ module Isomorfeus
         def document_execute_script(document, script, *args)
           @context.eval <<~JAVASCRIPT
             AllDomHandles[#{document.handle}].window.eval(
-              `(function() { var arguments = #{args};
-               #{script}
-              })()` 
+              "(function() { var arguments = #{ "#{args}".gsub('"', '\"') };" +
+              "#{script.gsub('\\', '\\\\\\').gsub('"', '\"').gsub("\n", "\\n")}" +
+              "})()" 
             )
           JAVASCRIPT
         rescue ExecJS::ProgramError => e
