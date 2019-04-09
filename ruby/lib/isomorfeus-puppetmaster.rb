@@ -2,13 +2,16 @@ require 'active_support/core_ext/string'
 require 'uri'
 require 'net/http'
 require 'rack'
-
+require 'opal'
+require 'opal-browser'
 require 'isomorfeus-speednode'
 
 # use execjs speednode for sure, unless something else has been specified
 unless ENV["EXECJS_RUNTIME"]
   ExecJS.runtime = ExecJS::Runtimes::Speednode
 end
+
+# require 'uglifier'
 
 require 'isomorfeus/puppetmaster'
 require 'isomorfeus/puppetmaster/self_forwardable'

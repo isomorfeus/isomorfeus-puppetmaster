@@ -75,7 +75,7 @@ module DriverSpec
       Isomorfeus::Puppetmaster.register_driver :firefox_allow_ssl do |app|
         Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :firefox, headless: true, app: app, ignore_https_errors: true)
       end
-      session = new_session(Isomorfeus::Puppetmaster.served_app, :firefox_allow_ssl)
+      session = open_new_session(Isomorfeus::Puppetmaster.served_app, :firefox_allow_ssl)
       doc = session.default_document
       doc.visit('https://expired.badssl.com')
       expect(doc).to have_css('#content', text: "expired.\nbadssl.com")
@@ -85,7 +85,7 @@ module DriverSpec
       Isomorfeus::Puppetmaster.register_driver :firefox_with_custom_max_size do |app|
         Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :firefox, headless: true, app: app, max_width: 800, max_height: 600)
       end
-      session = new_session(Isomorfeus::Puppetmaster.served_app, :firefox_with_custom_max_size)
+      session = open_new_session(Isomorfeus::Puppetmaster.served_app, :firefox_with_custom_max_size)
       doc = session.default_document
       doc.visit('/')
       doc.viewport_resize(400, 400)

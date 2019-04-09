@@ -55,7 +55,7 @@ module DriverSpec
         Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :chromium, headless: true, app: app, url_blacklist: ['unwanted'])
       end
 
-      session = new_session(Isomorfeus::Puppetmaster.served_app, :chromium_blacklist)
+      session = open_new_session(Isomorfeus::Puppetmaster.served_app, :chromium_blacklist)
 
       doc = session.default_document
       doc.visit '/puppetmaster/url_blacklist'
@@ -68,7 +68,7 @@ module DriverSpec
       Isomorfeus::Puppetmaster.register_driver :chromium_allow_ssl do |app|
         Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :chromium, headless: true, app: app, ignore_https_errors: true)
       end
-      session = new_session(Isomorfeus::Puppetmaster.served_app, :chromium_allow_ssl)
+      session = open_new_session(Isomorfeus::Puppetmaster.served_app, :chromium_allow_ssl)
       doc = session.default_document
       doc.visit('https://expired.badssl.com')
       expect(doc).to have_css('#content', text: "expired.\nbadssl.com")
@@ -78,7 +78,7 @@ module DriverSpec
       Isomorfeus::Puppetmaster.register_driver :chromium_with_custom_max_size do |app|
         Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :chromium, headless: true, app: app, max_width: 800, max_height: 600)
       end
-      session = new_session(Isomorfeus::Puppetmaster.served_app, :chromium_with_custom_max_size)
+      session = open_new_session(Isomorfeus::Puppetmaster.served_app, :chromium_with_custom_max_size)
       doc = session.default_document
       doc.visit('/')
       doc.viewport_resize(400, 400)

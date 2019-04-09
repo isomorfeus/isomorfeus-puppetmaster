@@ -22,6 +22,10 @@ module Isomorfeus
         @drivers ||= {}
       end
 
+      def opal_prelude
+        @opal_prelude ||= build_opal_prelude
+      end
+
       def register_driver(name, &block)
         drivers[name.to_sym] = block
       end
@@ -56,6 +60,12 @@ module Isomorfeus
 
       def servers
         @servers ||= {}
+      end
+
+      private
+
+      def build_opal_prelude
+        js = Opal::Builder.new.build_str("require 'opal'\nrequire 'opal-browser'", 'puppetmaster_opal_prelude').to_s
       end
     end
   end

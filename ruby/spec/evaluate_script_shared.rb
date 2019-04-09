@@ -32,11 +32,37 @@ module PuppetmasterSpec
 
     it 'should support returning elements', requires: %i[js es_args] do
       skip 'not supported'
-      @doc.visit('/with_js')
+      @doc = visit('/with_js')
       @doc.find('#change') # ensure page has loaded and element is available
       el = @oc.evaluate_script("document.getElementById('change')")
       expect(el).to be_instance_of(Capybara::Node::Element)
       expect(el).to eq(@doc.find(:css, '#change'))
+    end
+
+    context 'without Opal defined' do
+      it 'should evaluate ruby when Opal is not defined on client' do
+        @doc = visit('/with_js')
+        expect(@doc.evaluate_ruby('1+3')).to eq(4)
+      end
+
+      it 'should be able to use opal-browser' do
+        @doc = visit('/with_js')
+        expect(@doc.evaluate_ruby('$document["drag_scroll"].id')).to eq('drag_scroll')
+      end
+    end
+
+    context 'with Opal defined' do
+      it 'should evaluate ruby when Opal is defined on client' do
+        skip 'need to build opal assets'
+        @doc = visit('/with_opal')
+        expect(@doc.evaluate_ruby('1+3')).to eq(4)
+      end
+
+      it 'should be able to use opal-browser' do
+        skip 'need to build opal assets'
+        @doc = visit('/with_js')
+        expect(@doc.evaluate_ruby('1+3')).to eq(4)
+      end
     end
   end
 end

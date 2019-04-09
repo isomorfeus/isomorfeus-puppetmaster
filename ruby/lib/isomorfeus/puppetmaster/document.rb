@@ -69,6 +69,24 @@ module Isomorfeus
         @driver.browser
       end
 
+      def evaluate_ruby(ruby_source = '', &block)
+        ruby_source = block_source_code(&block) if block_given?
+        compiled_ruby = compile_ruby_source(ruby_source)
+        if compiled_ruby.start_with?('/*')
+          start_of_code = compiled_ruby.index('*/') + 3
+          compiled_ruby = compiled_ruby[start_of_code..-1]
+        end
+        javascript = <<~JAVASCRIPT
+          (function(){
+            if (typeof Opal === "undefined") {
+              #{Isomorfeus::Puppetmaster.opal_prelude}
+            }
+            return #{compiled_ruby}
+          })()
+        JAVASCRIPT
+        evaluate_script(javascript)
+      end
+
       def go_back
         @response = @driver.document_go_back(self)
         self
@@ -155,6 +173,17 @@ module Isomorfeus
       #       :assert_no_current_path
       #       assert_title
       #       assert_no_title
+
+      protected
+
+      def block_source_code(&block)
+        Unparser.unparse(Parser::CurrentRuby.parse(block.source).children.last)
+      end
+
+      def compile_ruby_source(source_code)
+        # TODO maybe use compile server
+        Opal.compile(source_code, parse_comments: false)
+      end
     end
   end
 end
