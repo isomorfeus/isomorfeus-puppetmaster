@@ -9,7 +9,8 @@ blocks:
       jobs:
         - name: Ruby
           commands:
-            - nvm install 8.11.3
+            - sudo apt-get -y remove --purge nodejs
+            - nvm install 10.15.3
             - sem-version ruby 2.5.3
             - checkout
             - cd ruby
