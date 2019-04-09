@@ -2,6 +2,7 @@
 
 A framework for acceptance tests or simply running tests in a headless browser. 
 Comes with drivers for chromium headless, firefox and jsdom.
+Allows for writing javascript tests in pure ruby.
 
 ## Chat
 At our [Gitter Isomorfeus Lobby](http://gitter.im/isomorfeus/Lobby) 
@@ -107,8 +108,27 @@ Both open documents can then be independently interacted with:
 doc.visit('/go')
 doc2.goto('/location')
 ```
+### Documents and Ruby
+
+Ruby can be executed within documents by simply providing a block or a string:
+```ruby
+doc.evaluate_ruby do
+  $document['my_id'].class_names
+end
+
+# or
+
+doc.evaluate_ruby "$document['my_id'].class_names"
+```
+
+The complete API of [opal-browser](https://github.com/opal/opal-browser) is available.
 
 ### Documents and Javascript
+
+Javascript can be be evaluated within documents by simply providing a string:
+```ruby
+doc.evaluate_javascript '1+1' # => 2
+```
 
 #### Executing Javascript
 
