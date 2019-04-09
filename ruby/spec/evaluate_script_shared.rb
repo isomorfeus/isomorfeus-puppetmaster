@@ -40,14 +40,43 @@ module PuppetmasterSpec
     end
 
     context 'without Opal defined' do
-      it 'should evaluate ruby when Opal is not defined on client' do
+      it 'should evaluate ruby as string when Opal is not defined on client' do
         @doc = visit('/with_js')
-        expect(@doc.evaluate_ruby('1+3')).to eq(4)
+        expect(@doc.evaluate_ruby('1 + 3')).to eq(4)
       end
 
-      it 'should be able to use opal-browser' do
+      it 'should evaluate ruby as string and be able to use opal-browser' do
         @doc = visit('/with_js')
         expect(@doc.evaluate_ruby('$document["drag_scroll"].id')).to eq('drag_scroll')
+      end
+
+      it 'should evaluate ruby as a block' do
+        @doc = visit('/with_js')
+        result = @doc.evaluate_ruby do
+          a = 1
+          b = 4
+          a + b
+        end
+        expect(result).to eq(5)
+
+        p = proc do
+          @doc.evaluate_ruby do
+            a = 2
+            b = 4
+            a + b
+          end
+        end
+        result = p.call
+        expect(result).to eq(6)
+      end
+
+      it 'should evaluate ruby as a block and be able to use opal-browser' do
+        @doc = visit('/with_js')
+        result = @doc.evaluate_ruby do
+          my_id = "drag_scroll"
+          $document[my_id].id
+        end
+        expect(result).to eq('drag_scroll')
       end
     end
 

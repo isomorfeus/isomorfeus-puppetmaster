@@ -4,6 +4,8 @@ require 'net/http'
 require 'rack'
 require 'opal'
 require 'opal-browser'
+require 'unparser'
+require 'method_source'
 require 'isomorfeus-speednode'
 
 # use execjs speednode for sure, unless something else has been specified

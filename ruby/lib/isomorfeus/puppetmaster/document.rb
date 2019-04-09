@@ -177,7 +177,9 @@ module Isomorfeus
       protected
 
       def block_source_code(&block)
-        Unparser.unparse(Parser::CurrentRuby.parse(block.source).children.last)
+        source_block = Parser::CurrentRuby.parse(block.source).children.last
+        source_block = source_block.children.last if source_block.type == :block
+        Unparser.unparse(source_block)
       end
 
       def compile_ruby_source(source_code)
