@@ -39,8 +39,26 @@ module PuppetmasterSpec
       expect(el).to eq(@doc.find(:css, '#change'))
     end
 
+    it 'should evaluate ruby in the app context' do
+      on_server do
+        TEST_CONST = 10 unless defined? TEST_CONST
+      end
+      app_constants = on_server do
+        Module.constants.sort
+      end
+      val = within_app do
+        TEST_CONST
+      end
+      loc_val = TEST_CONST if defined?(TEST_CONST)
+      local_constants = Module.constants.sort
+      expect(app_constants).to include(:Rack, :TestApp)
+      expect(val).to eq(10)
+      expect(local_constants).not_to include(:TEST_CONST)
+      expect(loc_val).to be(nil)
+    end
+
     context 'without Opal defined' do
-      it 'should evaluate ruby as string when Opal is not defined on client' do
+      it 'should evaluate ruby as string' do
         @doc = visit('/with_js')
         expect(@doc.evaluate_ruby('1 + 3')).to eq(4)
       end
@@ -79,24 +97,6 @@ module PuppetmasterSpec
         expect(result).to eq('drag_scroll')
       end
 
-      it 'should evaluate ruby in the app context' do
-        on_server do
-          TEST_CONST = 10
-        end
-        app_constants = on_server do
-          Module.constants.sort
-        end
-        val = within_app do
-          TEST_CONST
-        end
-        loc_val = TEST_CONST if defined?(TEST_CONST)
-        local_constants = Module.constants.sort
-        expect(app_constants).to include(:Rack, :TestApp, :TEST_CONST)
-        expect(val).to eq(10)
-        expect(local_constants).not_to include(:TEST_CONST)
-        expect(loc_val).to be(nil)
-      end
-
       it 'should evaluate ruby isomorphically' do
         @doc = visit('/with_js')
         client_result = @doc.isomorphic do
@@ -107,16 +107,58 @@ module PuppetmasterSpec
     end
 
     context 'with Opal defined' do
-      it 'should evaluate ruby when Opal is defined on client' do
-        skip 'need to build opal assets'
+      it 'should evaluate ruby as string' do
         @doc = visit('/with_opal')
-        expect(@doc.evaluate_ruby('1+3')).to eq(4)
+        expect(@doc.evaluate_ruby('1 + 3')).to eq(4)
       end
 
-      it 'should be able to use opal-browser' do
-        skip 'need to build opal assets'
-        @doc = visit('/with_js')
-        expect(@doc.evaluate_ruby('1+3')).to eq(4)
+      it 'should evaluate ruby as string and be able to use opal-browser' do
+        @doc = visit('/with_opal')
+        expect(@doc.evaluate_ruby('$document["a_div"].id')).to eq('a_div')
+      end
+
+      it 'should evaluate ruby as a block' do
+        @doc = visit('/with_opal')
+        result = @doc.evaluate_ruby do
+          a = 1
+          b = 4
+          a + b
+        end
+        expect(result).to eq(5)
+
+        p = proc do
+          @doc.evaluate_ruby do
+            a = 2
+            b = 4
+            a + b
+          end
+        end
+        result = p.call
+        expect(result).to eq(6)
+      end
+
+      it 'should evaluate ruby as a block and be able to use opal-browser' do
+        @doc = visit('/with_opal')
+        result = @doc.evaluate_ruby do
+          my_id = "a_div"
+          $document[my_id].id
+        end
+        expect(result).to eq('a_div')
+      end
+
+      it 'should evaluate ruby isomorphically' do
+        @doc = visit('/with_opal')
+        @doc.isomorphic do
+          TEST_OPAL_CONST = 12 unless defined? TEST_OPAL_CONST
+        end
+        client_result = @doc.evaluate_ruby do
+          TEST_OPAL_CONST
+        end
+        server_result = on_server do
+          TEST_OPAL_CONST
+        end
+        expect(client_result).to eq(12)
+        expect(server_result).to eq(12)
       end
     end
   end

@@ -174,6 +174,20 @@ class TestApp < Sinatra::Base
     erb :with_html, locals: { referrer: request.referrer }
   end
 
+  get '/with_opal' do
+    @@with_opal ||= <<-HTML
+      <title>With Opal</title>
+      <head>
+        <script type='application/javascript'>
+          #{Isomorfeus::Puppetmaster.opal_prelude}
+        </script>
+      </head>
+      <body>
+        <div id="a_div" class="a_class">Div Content</div>
+      </body>
+    HTML
+  end
+
   get '/with_title' do
     <<-HTML
       <title>#{params[:title] || 'Test Title'}</title>

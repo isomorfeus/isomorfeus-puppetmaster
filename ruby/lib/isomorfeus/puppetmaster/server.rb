@@ -69,7 +69,7 @@ module Isomorfeus
           http = Net::HTTP.start(@host, @port, { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE })
           http.post('/__executor__', Oj.dump(request_hash, {}))
         else
-          http = Net::HTTP.start(@host, @port, read_timeout: 2)
+          http = Net::HTTP.start(@host, @port)
           http.post('/__executor__', Oj.dump(request_hash, {}))
         end
         if response.code == '200'
