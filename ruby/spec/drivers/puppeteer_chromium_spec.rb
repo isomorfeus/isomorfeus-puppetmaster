@@ -24,10 +24,12 @@ module DriverSpec
 
     it_behaves_like 'document and node'
     it_behaves_like 'document and node enhanced'
+    it_behaves_like '#evaluate_script'
     it_behaves_like '#find'
     it_behaves_like '#find enhanced'
-    it_behaves_like '#evaluate_script'
-
+    it_behaves_like '#find_all'
+    it_behaves_like 'html'
+    it_behaves_like 'html enhanced'
     it_behaves_like 'console'
     it_behaves_like 'scrolling'
     it_behaves_like 'viewport'

@@ -14,9 +14,11 @@ require 'support/output_writer'
 # frozen_string_literal: true
 require 'nokogiri'
 require 'test_app'
-require 'drivers/drivers_shared'
-require 'document_shared'
-require 'evaluate_script_shared'
+require 'shared/find_all'
+require 'shared/drivers'
+require 'shared/document'
+require 'shared/evaluate_script'
+require 'shared/html'
 
 Isomorfeus::Puppetmaster.download_path = File.join(Dir.pwd, 'download_path_tmp')
 
