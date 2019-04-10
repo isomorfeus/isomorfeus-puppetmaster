@@ -46,7 +46,7 @@ module PuppetmasterSpec
       app_constants = on_server do
         Module.constants.sort
       end
-      val = within_app do
+      val = on_server do
         TEST_CONST
       end
       server_context = on_server do
