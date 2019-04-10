@@ -228,7 +228,7 @@ module Isomorfeus
         end
 
         def node_execute_script(node, script, *args)
-          # TODO
+          # TODO this wont work yet
           await <<~JAVASCRIPT
             var node_handle = #{node.handle};
             await AllElementHandles[node_handle].executionContext().evaluateHandle((node, arguments) => {
@@ -239,7 +239,7 @@ module Isomorfeus
         end
 
         def node_evaluate_script(node, script, *args)
-          # TODO
+          # TODO this wont work yet
           await <<~JAVASCRIPT
             var node_handle = #{node.handle};
             await AllElementHandles[node_handle].executionContext().evaluateHandle((node, arguments) => {
