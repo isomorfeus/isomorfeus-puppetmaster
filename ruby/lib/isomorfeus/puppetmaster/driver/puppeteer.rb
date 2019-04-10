@@ -102,12 +102,13 @@ module Isomorfeus
           node_data = await <<~JAVASCRIPT
             var tt = await AllElementHandles[#{frame.handle}].executionContext().evaluate((frame) => {
               node = frame.contentDocument.body;
+              var name = node.nodeName;
               var tag = node.tagName.toLowerCase();
               var type = null;
               if (tag === 'input') { type = node.getAttribute('type'); }
-              return [tag, type];
+              return [name, tag, type];
             }, AllElementHandles[#{frame.handle}]);
-            LastResult = {handle: node_handle, tag: tt[0], type: tt[1]};
+            LastResult = {handle: node_handle, name: tt[0], tag: tt[1], type: tt[2]};
           JAVASCRIPT
           if node_data
             node_data[:css_selector] = 'body'
@@ -127,12 +128,13 @@ module Isomorfeus
           node_data = await <<~JAVASCRIPT
             var tt = await AllElementHandles[#{frame.handle}].executionContext().evaluate((frame) => {
               node = frame.contentDocument.head;
+              var name = node.nodeName;
               var tag = node.tagName.toLowerCase();
               var type = null;
               if (tag === 'input') { type = node.getAttribute('type'); }
-              return [tag, type];
+              return [name, tag, type];
             }, AllElementHandles[#{frame.handle}]);
-            LastResult = {handle: node_handle, tag: tt[0], type: tt[1]};
+            LastResult = {handle: node_handle, name: tt[0], tag: tt[1], type: tt[2]};
           JAVASCRIPT
           if node_data
             node_data[:css_selector] = 'body'

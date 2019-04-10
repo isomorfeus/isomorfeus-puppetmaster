@@ -84,7 +84,7 @@ module Isomorfeus
         wait_for_xpath
       ]
 
-      attr_reader :document, :handle, :css_selector, :tag, :xpath_query
+      attr_reader :document, :handle, :css_selector, :name, :tag, :xpath_query
 
       SUPPORTED_HTML_ELEMENTS.each do |element|
         is_name = element == 'a' ? :is_link? : "is_#{element}?".to_sym
@@ -123,6 +123,7 @@ module Isomorfeus
         @document = document
         @driver = driver
         @handle = node_data[:handle] || node_data['handle']
+        @name = node_data[:name] || node_data['name']
         @tag = node_data[:tag] || node_data['tag']
         @type = node_data[:type] || node_data['type']
         @xpath_query = node_data[:xpath_query] || node_data['xpath_query']

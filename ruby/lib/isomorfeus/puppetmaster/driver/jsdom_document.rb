@@ -94,8 +94,9 @@ module Isomorfeus
           node_data = @context.exec <<~JAVASCRIPT
             var node = AllDomHandles[#{document.handle}].window.document.body;
             var node_handle = RegisterElementHandle(node);
+            var name = node.nodeName;
             var tag = node.tagName.toLowerCase();
-            return {handle: node_handle, tag: tag, type: null, content_editable: node.isContentEditable};
+            return {handle: node_handle, name: name, tag: tag, type: null, content_editable: node.isContentEditable};
           JAVASCRIPT
           if node_data
             node_data[:css_selector] = 'body'
@@ -308,10 +309,11 @@ module Isomorfeus
             var node = AllDomHandles[#{document.handle}].window.document.querySelector("#{js_escaped_selector}");
             if (node) {
               var node_handle = RegisterElementHandle(node);
-              var tag = node.tagName.toLowerCase();
+              var tag = node.tagName ? node.tagName.toLowerCase() : '';
+              var name = node.nodeName;
               var type = null;
               if (tag === 'input') { type = node.getAttribute('type'); }
-              return {handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable};
+              return {handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable};
             }
           JAVASCRIPT
           if node_data
@@ -331,11 +333,13 @@ module Isomorfeus
             var node_data_array = [];
             if (node_array) {
               for (var i=0; i<node_array.length; i++) {
+                var node = node_array[i];
                 var node_handle = RegisterElementHandle(node_array[i]);
-                var tag = node.tagName.toLowerCase();
+                var tag = node.tagName ? node.tagName.toLowerCase() : '';
+                var name = node.nodeName;
                 var type = null;
                 if (tag === 'input') { type = node.getAttribute('type'); }
-                node_data_array.push({handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable});
+                node_data_array.push({handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable});
               }
             }
             return node_data_array;
@@ -354,12 +358,13 @@ module Isomorfeus
             var xpath_result = document.evaluate("#{js_escaped_query}", document, null, window.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
             var node;
             var node_data_array = [];
-            while (node = xpath_result.iterateNext) {
+            while (node = xpath_result.iterateNext()) {
               var node_handle = RegisterElementHandle(node);
-              var tag = node.tagName.toLowerCase();
+              var tag = node.tagName ? node.tagName.toLowerCase() : '';
+              var name = node.nodeName;
               var type = null;
               if (tag === 'input') { type = node.getAttribute('type'); }
-              node_data_array.push({handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable});
+              node_data_array.push({handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable});
             }  
             return node_data_array;
           JAVASCRIPT
@@ -378,10 +383,11 @@ module Isomorfeus
             var node = xpath_result.singleNodeValue;
             if (node) {
               var node_handle = RegisterElementHandle(node);
-              var tag = node.tagName.toLowerCase();
+              var tag = node.tagName ? node.tagName.toLowerCase() : '';
+              var name = node.nodeName;
               var type = null;
               if (tag === 'input') { type = node.getAttribute('type'); }
-              return {handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable};
+              return {handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable};
             }
           JAVASCRIPT
           if node_data
@@ -467,8 +473,9 @@ module Isomorfeus
           node_data = @context.exec <<~JAVASCRIPT
             var node = AllDomHandles[#{document.handle}].window.document.head;
             var node_handle = RegisterElementHandle(node);
+            var name = node.nodeName;
             var tag = node.tagName.toLowerCase();
-            return {handle: node_handle, tag: tag, type: null, content_editable: node.isContentEditable};
+            return {handle: node_handle, name: name, tag: tag, type: null, content_editable: node.isContentEditable};
           JAVASCRIPT
           if node_data
             node_data[:css_selector] = 'body'
@@ -855,10 +862,11 @@ module Isomorfeus
               node = AllDomHandles[#{document.handle}].window.document.querySelector("#{js_escaped_selector}");
               if (node) {
                 var node_handle = RegisterElementHandle(node);
+                var name = node.nodeName;
                 var tag = node.tagName.toLowerCase();
                 var type = null;
                 if (tag === 'input') { type = node.getAttribute('type'); }
-                LastResult = {handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable};
+                LastResult = {handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable};
                 resolve(true);
               }
               else if ((new Date() - start_time) > #{@jsdom_timeout}) { resolve(true); }
@@ -885,10 +893,11 @@ module Isomorfeus
               node = xpath_result.singleNodeValue;
               if (node) {
                 var node_handle = RegisterElementHandle(node);
+                var name = node.nodeName;
                 var tag = node.tagName.toLowerCase();
                 var type = null;
                 if (tag === 'input') { type = node.getAttribute('type'); }
-                LastResult = {handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable};
+                LastResult = {handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable};
                 resolve(true);
               }
               else if ((new Date() - start_time) > #{@jsdom_timeout}) { resolve(true); }

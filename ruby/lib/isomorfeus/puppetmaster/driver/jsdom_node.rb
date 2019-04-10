@@ -256,10 +256,11 @@ module Isomorfeus
             var node = AllElementHandles[#{node.handle}].querySelector("#{js_escaped_selector}");
             if (node) {
               var node_handle = RegisterElementHandle(node);
+              var name = node.nodeName;
               var tag = node.tagName.toLowerCase();
               var type = null;
               if (tag === 'input') { type = node.getAttribute('type'); }
-              return {handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable};
+              return {handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable};
             }
           JAVASCRIPT
           if node_data
@@ -280,10 +281,11 @@ module Isomorfeus
             if (node_array) {
               for (var i=0; i<node_array.length; i++) {
                 var node_handle = RegisterElementHandle(node_array[i]);
+                var name = node_array[i].nodeName;
                 var tag = node_array[i].tagName.toLowerCase();
                 var type = null;
                 if (tag === 'input') { type = node_array[i].getAttribute('type'); }
-                node_data_array.push({handle: node_handle, tag: tag, type: type, content_editable: node_array[i].isContentEditable});
+                node_data_array.push({handle: node_handle, name: name, tag: tag, type: type, content_editable: node_array[i].isContentEditable});
               }
             }
             return node_data_array;
@@ -302,12 +304,13 @@ module Isomorfeus
             var xpath_result = document.evaluate("#{js_escaped_query}", AllElementHandles[#{node.handle}], null, window.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
             var node;
             var node_data_array = [];
-            while (node = xpath_result.iterateNext) {
+            while (node = xpath_result.iterateNext()) {
               var node_handle = RegisterElementHandle(node);
+              var name = node.nodeName;
               var tag = node.tagName.toLowerCase();
               var type = null;
               if (tag === 'input') { type = node.getAttribute('type'); }
-              node_data_array.push({handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable});
+              node_data_array.push({handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable});
             }  
             return node_data_array;
           JAVASCRIPT
@@ -326,10 +329,11 @@ module Isomorfeus
             var node = xpath_result.singleNodeValue;
             if (node) {
               var node_handle = RegisterElementHandle(node);
+              var name = node.nodeName;
               var tag = node.tagName.toLowerCase();
               var type = null;
               if (tag === 'input') { type = node.getAttribute('type'); }
-              return {handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable};
+              return {handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable};
             }
           JAVASCRIPT
           if node_data
@@ -784,10 +788,11 @@ module Isomorfeus
               var node = AllElementHandles[#{node.handle}].querySelector("#{js_escaped_selector}");
               if (node) {
                 var node_handle = RegisterElementHandle(node);
+                var name = node.nodeName;
                 var tag = node.tagName.toLowerCase();
                 var type = null;
                 if (tag === 'input') { type = node.getAttribute('type'); }
-                LastResult = {handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable};
+                LastResult = {handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable};
                 resolve(true);
               }
               else if ((new Date() - start_time) > #{@jsdom_timeout}) { resolve(true); }
@@ -813,10 +818,11 @@ module Isomorfeus
               var node = xpath_result.singleNodeValue;
               if (node) {
                 var node_handle = RegisterElementHandle(node);
+                var name = node.nodeName;
                 var tag = node.tagName.toLowerCase();
                 var type = null;
                 if (tag === 'input') { type = node.getAttribute('type'); }
-                LastResult = {handle: node_handle, tag: tag, type: type, content_editable: node.isContentEditable};
+                LastResult = {handle: node_handle, name: name, tag: tag, type: type, content_editable: node.isContentEditable};
                 resolve(true);
               }
               else if ((new Date() - start_time) > #{@jsdom_timeout}) { resolve(true); }

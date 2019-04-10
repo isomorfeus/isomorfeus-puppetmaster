@@ -312,12 +312,13 @@ module Isomorfeus
               if (element_handle) {
               var node_handle = RegisterElementHandle(element_handle);
               var tt = await AllElementHandles[node_handle].executionContext().evaluate((node) => {
+                var name = node.nodeName;
                 var tag = node.tagName.toLowerCase();
                 var type = null;
                 if (tag === 'input') { type = node.getAttribute('type'); }
-                return [tag, type, node.isContentEditable];
+                return [name, tag, type, node.isContentEditable];
               }, AllElementHandles[node_handle]);
-              LastResult = {handle: node_handle, tag: tt[0], type: tt[1], content_editable: tt[2]};
+              LastResult = {handle: node_handle, name: tt[0], tag: tt[1], type: tt[2], content_editable: tt[3]};
             }
           JAVASCRIPT
           if node_data
@@ -338,12 +339,13 @@ module Isomorfeus
               for (var i=0; i<element_handle_array.length; i++) {
                 var node_handle = RegisterElementHandle(element_handle_array[i]);
                 var tt = await AllElementHandles[node_handle].executionContext().evaluate((node) => {
+                  var name = node.nodeName;
                   var tag = node.tagName.toLowerCase();
                   var type = null;
                   if (tag === 'input') { type = node.getAttribute('type'); }
-                  return [tag, type, node.isContentEditable];
+                  return [name, tag, type, node.isContentEditable];
                 }, AllElementHandles[node_handle]);
-                node_data_array.push({handle: node_handle, tag: tt[0], type: tt[1], content_editable: tt[2]});
+                node_data_array.push({handle: node_handle, name: tt[0], tag: tt[1], type: tt[2], content_editable: tt[3]});
               }
             }
             LastResult = node_data_array;
@@ -363,12 +365,13 @@ module Isomorfeus
               for (var i=0; i<element_handle_array.length; i++) {
                 var node_handle = RegisterElementHandle(element_handle_array[i]);
                 var tt = await AllElementHandles[node_handle].executionContext().evaluate((node) => {
+                  var name = node.nodeName;
                   var tag = node.tagName.toLowerCase();
                   var type = null;
                   if (tag === 'input') { type = node.getAttribute('type'); }
-                  return [tag, type, node.isContentEditable];
+                  return [name, tag, type, node.isContentEditable];
                 }, AllElementHandles[node_handle]);
-                node_data_array.push({handle: node_handle, tag: tt[0], type: tt[1], content_editable: tt[2]});
+                node_data_array.push({handle: node_handle, name: tt[0], tag: tt[1], type: tt[2], content_editable: tt[3]});
               }  
             }
             LastResult = node_data_array;
@@ -387,12 +390,13 @@ module Isomorfeus
             if (element_handle) {
               var node_handle = RegisterElementHandle(element_handle);
               var tt = await AllElementHandles[node_handle].executionContext().evaluate((node) => {
+                var name = node.nodeName;
                 var tag = node.tagName.toLowerCase();
                 var type = null;
                 if (tag === 'input') { type = node.getAttribute('type'); }
-                return [tag, type, node.isContentEditable];
+                return [name, tag, type, node.isContentEditable];
               }, AllElementHandles[node_handle]);
-              LastResult = {handle: node_handle, tag: tt[0], type: tt[1], content_editable: tt[2]};
+              LastResult = {handle: node_handle, name: tt[0], tag: tt[1], type: tt[2], content_editable: tt[3]};
             }
           JAVASCRIPT
           if node_data
@@ -822,13 +826,14 @@ module Isomorfeus
             if (element_handle) {
               var node_handle = RegisterElementHandle(element_handle);
               var handle = await AllElementHandles[node_handle].evaluate((node) => {
+                var name = node.nodeName;
                 var tag = node.tagName.toLower();
                 var type = null;
                 if (tag === 'input') { type = node.getAttribute('type'); }
-                return [tag, type];
+                return [name, tag, type, node.isContentEditable];
               }, AllElementHandles[node_handle]);
               var tt = await handle.jsonValue();
-              LastResult = {handle: node_handle, tag: tt[0], type: tt[1]};
+              LastResult = {handle: node_handle, name: tt[0], tag: tt[1], type: tt[2], content_editable: tt[3]};
             }
           JAVASCRIPT
           if node_data
@@ -846,13 +851,14 @@ module Isomorfeus
             if (element_handle) {
               var node_handle = RegisterElementHandle(element_handle);
               var handle = await AllElementHandles[node_handle].evaluate((node) => {
+                var name = node.nodeName;
                 var tag = node.tagName.toLower();
                 var type = null;
                 if (tag === 'input') { type = node.getAttribute('type'); }
-                return [tag, type];
+                return [name, tag, type, node.isContentEditable];
               }, AllElementHandles[node_handle]);
               var tt = await handle.jsonValue();
-              LastResult = {handle: node_handle, tag: tt[0], type: tt[1]};
+              LastResult = {handle: node_handle, name: tt[0], tag: tt[1], type: tt[2], content_editable: tt[3]};
             }
           JAVASCRIPT
           if node_data
