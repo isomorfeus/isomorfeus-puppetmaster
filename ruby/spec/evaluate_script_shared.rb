@@ -49,12 +49,16 @@ module PuppetmasterSpec
       val = within_app do
         TEST_CONST
       end
+      server_context = on_server do
+        self.class.to_s
+      end
       loc_val = TEST_CONST if defined?(TEST_CONST)
       local_constants = Module.constants.sort
       expect(app_constants).to include(:Rack, :TestApp)
       expect(val).to eq(10)
       expect(local_constants).not_to include(:TEST_CONST)
       expect(loc_val).to be(nil)
+      expect(server_context).to eq('Class')
     end
 
     context 'without Opal defined' do

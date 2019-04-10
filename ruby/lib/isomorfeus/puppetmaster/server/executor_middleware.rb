@@ -20,7 +20,7 @@ module Isomorfeus
                 Rack::Response.new(Oj.dump({ 'error' => 'wrong key given, execution denied' }, {}), 401, 'Content-Type' => 'application/json').finish
               end
               begin
-                result = instance_eval(request_hash['code']) if request_hash['code']
+                result = Object.instance_eval(request_hash['code']) if request_hash['code']
               rescue Exception => e
                 Rack::Response.new(Oj.dump({ 'error' => "#{e.class}: #{e.message}" }, {}), 200, 'Content-Type' => 'application/json').finish
               end

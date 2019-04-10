@@ -175,12 +175,10 @@ class TestApp < Sinatra::Base
   end
 
   get '/with_opal' do
-    @@with_opal ||= <<-HTML
+    <<-HTML
       <title>With Opal</title>
       <head>
-        <script type='application/javascript'>
-          #{Isomorfeus::Puppetmaster.opal_prelude}
-        </script>
+        <script src="/opal-with-browser.min.js" type="text/javascript" charset="utf-8"></script>
       </head>
       <body>
         <div id="a_div" class="a_class">Div Content</div>
