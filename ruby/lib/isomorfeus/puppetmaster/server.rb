@@ -65,20 +65,18 @@ module Isomorfeus
       def on_server(ruby_source = '', &block)
         ruby_source = Isomorfeus::Puppetmaster.block_source_code(&block) if block_given?
         request_hash = { 'key' => @request_key, 'code' => ruby_source }
-        response = nil
-        if using_ssl?
+        response = if using_ssl?
           http = Net::HTTP.start(@host, @port, { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE })
-          response = http.post('/__executor__', Oj.dump(request_hash, {}))
+          http.post('/__executor__', Oj.dump(request_hash, {}))
         else
           http = Net::HTTP.start(@host, @port, read_timeout: 2)
-          response = http.post('/__executor__', Oj.dump(request_hash, {}))
+          http.post('/__executor__', Oj.dump(request_hash, {}))
         end
         if response.code == '200'
           result_hash = Oj.load(response.body, {})
           raise result_hash['error'] if result_hash.has_key?('error')
           result_hash['result']
         else
-          STDERR.puts 'R', response
           raise 'A error occured.'
         end
       end
