@@ -70,7 +70,7 @@ module Isomorfeus
       end
 
       def evaluate_ruby(ruby_source = '', &block)
-        ruby_source = block_source_code(&block) if block_given?
+        ruby_source = Isomorfeus::Puppetmaster.block_source_code(&block) if block_given?
         compiled_ruby = compile_ruby_source(ruby_source)
         if compiled_ruby.start_with?('/*')
           start_of_code = compiled_ruby.index('*/') + 3
@@ -121,6 +121,12 @@ module Isomorfeus
 
       def has_xpath?(query, **options)
         body.has_xpath?(query, options)
+      end
+
+      def isomorphic(ruby_source = '', &block)
+        ruby_source = Isomorfeus::Puppetmaster.block_source_code(&block) if block_given?
+        Isomorfeus::Puppetmaster.served_app.on_server(ruby_source)
+        evaluate_ruby(ruby_source)
       end
 
       def method_missing(name, *args)
@@ -175,12 +181,6 @@ module Isomorfeus
       #       assert_no_title
 
       protected
-
-      def block_source_code(&block)
-        source_block = Parser::CurrentRuby.parse(block.source).children.last
-        source_block = source_block.children.last if source_block.type == :block
-        Unparser.unparse(source_block)
-      end
 
       def compile_ruby_source(source_code)
         # TODO maybe use compile server

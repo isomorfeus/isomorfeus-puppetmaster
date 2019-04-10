@@ -9,6 +9,12 @@ module Isomorfeus
         @served_app = Isomorfeus::Puppetmaster::Server.new(app, port: server_port, host: server_host).boot
       end
 
+      def block_source_code(&block)
+        source_block = Parser::CurrentRuby.parse(block.source).children.last
+        source_block = source_block.children.last if source_block.type == :block
+        Unparser.unparse(source_block)
+      end
+
       def driver
         @driver ||= :chromium
       end

@@ -6,6 +6,7 @@ require 'opal'
 require 'opal-browser'
 require 'unparser'
 require 'method_source'
+require 'securerandom'
 require 'isomorfeus-speednode'
 
 # use execjs speednode for sure, unless something else has been specified
@@ -39,7 +40,7 @@ require 'isomorfeus/puppetmaster/driver/jsdom_document'
 require 'isomorfeus/puppetmaster/driver/jsdom_node'
 require 'isomorfeus/puppetmaster/driver/jsdom'
 require 'isomorfeus/puppetmaster/driver_registration'
-
+require 'isomorfeus/puppetmaster/server/executor_middleware'
 require 'isomorfeus/puppetmaster/server/middleware'
 require 'isomorfeus/puppetmaster/server/checker'
 require 'isomorfeus/puppetmaster/server'

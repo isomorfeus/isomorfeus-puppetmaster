@@ -78,6 +78,32 @@ module PuppetmasterSpec
         end
         expect(result).to eq('drag_scroll')
       end
+
+      it 'should evaluate ruby in the app context' do
+        on_server do
+          TEST_CONST = 10
+        end
+        app_constants = on_server do
+          Module.constants.sort
+        end
+        val = within_app do
+          TEST_CONST
+        end
+        loc_val = TEST_CONST if defined?(TEST_CONST)
+        local_constants = Module.constants.sort
+        expect(app_constants).to include(:Rack, :TestApp, :TEST_CONST)
+        expect(val).to eq(10)
+        expect(local_constants).not_to include(:TEST_CONST)
+        expect(loc_val).to be(nil)
+      end
+
+      it 'should evaluate ruby isomorphically' do
+        @doc = visit('/with_js')
+        client_result = @doc.isomorphic do
+          10 + 5
+        end
+        expect(client_result).to eq(15)
+      end
     end
 
     context 'with Opal defined' do

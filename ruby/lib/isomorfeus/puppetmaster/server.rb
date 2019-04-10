@@ -40,6 +40,12 @@ module Isomorfeus
                      extra_middleware: [])
         @app = app
         @extra_middleware = extra_middleware
+        @request_key = Isomorfeus::Puppetmaster::Server::ExecutorMiddleware.class_variable_get(:@@request_key)
+        unless @request_key
+          @request_key = SecureRandom.alphanumeric(128)
+          Isomorfeus::Puppetmaster::Server::ExecutorMiddleware.class_variable_set(:@@request_key, @request_key)
+        end
+        @extra_middleware << Isomorfeus::Puppetmaster::Server::ExecutorMiddleware
         @server_thread = nil # suppress warnings
         @host = host
         @port = port
@@ -54,6 +60,27 @@ module Isomorfeus
 
       def error
         middleware.error
+      end
+
+      def on_server(ruby_source = '', &block)
+        ruby_source = Isomorfeus::Puppetmaster.block_source_code(&block) if block_given?
+        request_hash = { 'key' => @request_key, 'code' => ruby_source }
+        response = nil
+        if using_ssl?
+          http = Net::HTTP.start(@host, @port, { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE })
+          response = http.post('/__executor__', Oj.dump(request_hash, {}))
+        else
+          http = Net::HTTP.start(@host, @port, read_timeout: 2)
+          response = http.post('/__executor__', Oj.dump(request_hash, {}))
+        end
+        if response.code == '200'
+          result_hash = Oj.load(response.body, {})
+          raise result_hash['error'] if result_hash.has_key?('error')
+          result_hash['result']
+        else
+          STDERR.puts 'R', response
+          raise 'A error occured.'
+        end
       end
 
       def using_ssl?

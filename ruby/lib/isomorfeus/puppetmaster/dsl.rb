@@ -11,6 +11,11 @@ module Isomorfeus
       end
       alias_method :visit, :goto
 
+      def on_server(ruby_source = '', &block)
+        Isomorfeus::Puppetmaster.served_app.on_server(ruby_source, &block)
+      end
+      alias_method :within_app, :on_server
+
       def open_new_session(app = nil, driver = nil)
         Isomorfeus::Puppetmaster.drivers[driver ? driver : Isomorfeus::Puppetmaster.driver].call(app ? app : Isomorfeus::Puppetmaster.served_app)
       end
