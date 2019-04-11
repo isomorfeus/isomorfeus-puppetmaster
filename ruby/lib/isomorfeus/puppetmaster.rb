@@ -3,7 +3,7 @@ module Isomorfeus
     class << self
       attr_accessor :app, :server_port, :session
       attr_writer :download_path, :server_host, :server_scheme
-      attr_reader :served_app, :server
+      attr_reader :server
 
       def boot_app
         @served_app = Isomorfeus::Puppetmaster::Server.new(app, port: server_port, host: server_host).boot
@@ -42,6 +42,10 @@ module Isomorfeus
 
       def download_path
         @download_path ||= Dir.pwd
+      end
+
+      def served_app
+        @served_app ||= boot_app
       end
 
       def server=(name)
