@@ -29,7 +29,6 @@ module Isomorfeus
         def configure(config)
           config.before { Isomorfeus::Puppetmaster::SpecHelper.reset! }
           config.after { Isomorfeus::Puppetmaster::SpecHelper.reset! }
-          config.shared_context_metadata_behavior = :apply_to_host_groups
         end
 
         def reset!
