@@ -4,8 +4,8 @@ A framework for acceptance tests or simply running tests in a headless browser.
 Comes with drivers for chromium headless, firefox and jsdom.
 Allows for writing javascript tests in pure ruby.
 
-## Chat
-At our [Gitter Isomorfeus Lobby](http://gitter.im/isomorfeus/Lobby) 
+### Community and Support
+At the [Isomorfeus Framework Project](http://isomorfeus.com)
 
 ## Running on:
 - [CircleCI](https://circleci.com): [![CircleCI](https://circleci.com/gh/isomorfeus/isomorfeus-puppetmaster/tree/master.svg?style=svg)](https://circleci.com/gh/isomorfeus/isomorfeus-puppetmaster/tree/master)
