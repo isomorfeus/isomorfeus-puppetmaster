@@ -43,3 +43,5 @@ yarn-debug.log*
 Gemfile.lock
 yarn.lock
 package-lock.json
+save_path_tmp
+screenshots
