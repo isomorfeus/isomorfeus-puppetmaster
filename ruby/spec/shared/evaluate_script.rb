@@ -64,17 +64,17 @@ module PuppetmasterSpec
     context 'without Opal defined' do
       it 'should evaluate ruby as string' do
         @doc = visit('/with_js')
-        expect(@doc.evaluate_ruby('1 + 3')).to eq(4)
+        expect(@doc.evaluate_with_opal('1 + 3')).to eq(4)
       end
 
       it 'should evaluate ruby as string and be able to use opal-browser' do
         @doc = visit('/with_js')
-        expect(@doc.evaluate_ruby('$document["drag_scroll"].id')).to eq('drag_scroll')
+        expect(@doc.evaluate_with_opal('$document["drag_scroll"].id')).to eq('drag_scroll')
       end
 
       it 'should evaluate ruby as a block' do
         @doc = visit('/with_js')
-        result = @doc.evaluate_ruby do
+        result = @doc.evaluate_with_opal do
           a = 1
           b = 4
           a + b
@@ -82,7 +82,7 @@ module PuppetmasterSpec
         expect(result).to eq(5)
 
         p = proc do
-          @doc.evaluate_ruby do
+          @doc.evaluate_with_opal do
             a = 2
             b = 4
             a + b
@@ -94,7 +94,7 @@ module PuppetmasterSpec
 
       it 'should evaluate ruby as a block and be able to use opal-browser' do
         @doc = visit('/with_js')
-        result = @doc.evaluate_ruby do
+        result = @doc.evaluate_with_opal do
           my_id = "drag_scroll"
           $document[my_id].id
         end
@@ -103,7 +103,7 @@ module PuppetmasterSpec
 
       it 'should evaluate ruby isomorphically' do
         @doc = visit('/with_js')
-        client_result = @doc.isomorphic do
+        client_result = @doc.isomorphic_with_opal do
           10 + 5
         end
         expect(client_result).to eq(15)

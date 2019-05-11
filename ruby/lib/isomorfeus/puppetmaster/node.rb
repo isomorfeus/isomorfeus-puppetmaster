@@ -147,6 +147,21 @@ module Isomorfeus
         end
         javascript = <<~JAVASCRIPT
           (function(){
+            return #{compiled_ruby}
+          })()
+        JAVASCRIPT
+        evaluate_script(javascript)
+      end
+
+      def evaluate_with_opal(ruby_source = '', &block)
+        ruby_source = Isomorfeus::Puppetmaster.block_source_code(&block) if block_given?
+        compiled_ruby = compile_ruby_source(ruby_source)
+        if compiled_ruby.start_with?('/*')
+          start_of_code = compiled_ruby.index('*/') + 3
+          compiled_ruby = compiled_ruby[start_of_code..-1]
+        end
+        javascript = <<~JAVASCRIPT
+          (function(){
             if (typeof Opal === "undefined") {
               #{Isomorfeus::Puppetmaster.opal_prelude}
             }
