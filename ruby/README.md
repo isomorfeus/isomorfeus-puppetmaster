@@ -31,6 +31,7 @@ Speednode will pickup the node modules then from the projects root node_modules 
 
 Puppetmaster provides these drivers:
 - chromium - a real browser, headless, fast
+- chromium_wsl - as above but with options os it can execute within the Windows Linux WSL
 - chromium_debug - opens a chromium browser window with devtools enabled, useful for debugging tests
 - firefox - real firefox, running headless, not so fast
 - firefox_debug - opens a firefox browser window with devtools enabled, useful for debugging tests
