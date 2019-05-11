@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.require_paths  = ['lib']
 
   s.add_dependency 'activesupport'
-  s.add_dependency 'isomorfeus-speednode', '~> 0.2.1'
+  s.add_dependency 'isomorfeus-speednode', '~> 0.2.2'
   s.add_dependency 'method_source'
   s.add_dependency 'opal', '>= 0.11.0'
   s.add_dependency 'opal-browser', '>= 0.2.0'
