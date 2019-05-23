@@ -19,10 +19,10 @@ In Gemfile:
 
 Also requires the following npm modules with recommended versions:
 
-- puppeteer 1.13.0 - for the chromium driver
-- puppeteer-firefox 0.5.0 - for the firefox driver
-- jsdom 14.0.0 - for the jsdom driver
-- canvas 2.4.1 - for the jsdom driver
+- [puppeteer 1.16.0](https://github.com/GoogleChrome/puppeteer#readme) - for the chromium driver
+- [puppeteer-firefox 0.5.0](https://www.npmjs.com/package/puppeteer-firefox) - for the firefox driver
+- [jsdom 14.0.0](https://github.com/jsdom/jsdom#readme) - for the jsdom driver
+- [canvas 2.4.1](https://github.com/Automattic/node-canvas) - for the jsdom driver (optional)
 
 Simply install them in your projects root. Puppetmaster also depends on isomorfeus-speednode, which will be installed automatically.
 Speednode will pickup the node modules then from the projects root node_modules directory.
@@ -37,13 +37,23 @@ Puppetmaster provides these drivers:
 - firefox_debug - opens a firefox browser window with devtools enabled, useful for debugging tests
 - jsdom - provides a dom implementation in javascript, can execute javascript in the document, super fast, headless, has certain limitations,
   especially because its not rendering anything (no element bounding box, etc.)
+- jsdom_canvas - jsdom driver with additional support for 'canvas', requires certain libraries to be installed, see: [canvas at github](https://github.com/Automattic/node-canvas)
 
-Selecting a driver, for example jsdom:
+Chromium is the default driver. Selecting another driver, for example jsdom:
 ```ruby
 Isomorfeus::Puppetmaster.driver = :jsdom
 ```
-(chromium is the default driver)
 
+Puppetmaster provides support for these rack servers:
+- [agoo](https://github.com/ohler55/agoo)
+- [falcon](https://github.com/socketry/falcon)
+- [iodine](https://github.com/boazsegev/iodine)
+- [puma](https://github.com/puma/puma)
+
+Puma is the default rack server. To assign another rack server:
+```ruby
+Isomorfeus::Puppetmaster.server = :agoo
+```
 
 Getting the app ready and running:
 1. Assign a rack app
