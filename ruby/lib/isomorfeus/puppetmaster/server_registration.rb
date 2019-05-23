@@ -1,5 +1,6 @@
 Isomorfeus::Puppetmaster.register_server :agoo do |app, port, _host, **options|
   begin
+    require 'agoo/version'
     require 'rack/handler/agoo'
   rescue LoadError
     raise LoadError, "Unable to load 'agoo' as server."
@@ -11,8 +12,37 @@ Isomorfeus::Puppetmaster.register_server :agoo do |app, port, _host, **options|
   Rack::Handler::Agoo.run(app, { port: port }.merge(options)).join
 end
 
+Isomorfeus::Puppetmaster.register_server :falcon do |app, port, host, **options|
+  begin
+    require 'falcon/version'
+    require 'rack/handler/falcon'
+  rescue LoadError
+    raise LoadError, "Unable to load 'falcon' as server."
+  end
+
+  events.log 'Puppetmaster starting Falcon...'
+  events.log "* Version #{Falcon::VERSION}"
+
+  Rack::Handler::Falcon.run(app, { Host: host, Port: port }.merge(options)).join
+end
+
+Isomorfeus::Puppetmaster.register_server :iodine do |app, port, _host, **options|
+  begin
+    require 'iodine/version'
+    require 'rack/handler/iodine'
+  rescue LoadError
+    raise LoadError, "Unable to load 'iodine' as server."
+  end
+
+  events.log 'Puppetmaster starting Iodine...'
+  events.log "* Version #{Iodine::VERSION}"
+
+  Rack::Handler::Iodine.run(app, { Host: host, Port: port }.merge(options)).join
+end
+
 Isomorfeus::Puppetmaster.register_server :puma do |app, port, host, **options|
   begin
+    require 'puma/const'
     require 'rack/handler/puma'
   rescue LoadError
     raise LoadError, "Unable to load 'puma' as server."
