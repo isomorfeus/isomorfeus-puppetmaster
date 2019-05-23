@@ -26,7 +26,7 @@ Isomorfeus::Puppetmaster.register_server :falcon do |app, port, host, **options|
   Rack::Handler::Falcon.run(app, { Host: host, Port: port }.merge(options)).join
 end
 
-Isomorfeus::Puppetmaster.register_server :iodine do |app, port, _host, **options|
+Isomorfeus::Puppetmaster.register_server :iodine do |app, port, host, **options|
   begin
     require 'iodine/version'
     require 'rack/handler/iodine'
