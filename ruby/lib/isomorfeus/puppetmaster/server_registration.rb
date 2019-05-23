@@ -6,8 +6,8 @@ Isomorfeus::Puppetmaster.register_server :agoo do |app, port, _host, **options|
     raise LoadError, "Unable to load 'agoo' as server."
   end
 
-  events.log 'Puppetmaster starting Agoo...'
-  events.log "* Version #{Agoo::VERSION}"
+  puts 'Puppetmaster starting Agoo...'
+  puts "* Version #{Agoo::VERSION}"
 
   Rack::Handler::Agoo.run(app, { port: port }.merge(options)).join
 end
@@ -20,8 +20,8 @@ Isomorfeus::Puppetmaster.register_server :falcon do |app, port, host, **options|
     raise LoadError, "Unable to load 'falcon' as server."
   end
 
-  events.log 'Puppetmaster starting Falcon...'
-  events.log "* Version #{Falcon::VERSION}"
+  puts 'Puppetmaster starting Falcon...'
+  puts "* Version #{Falcon::VERSION}"
 
   Rack::Handler::Falcon.run(app, { Host: host, Port: port }.merge(options)).join
 end
@@ -34,8 +34,8 @@ Isomorfeus::Puppetmaster.register_server :iodine do |app, port, _host, **options
     raise LoadError, "Unable to load 'iodine' as server."
   end
 
-  events.log 'Puppetmaster starting Iodine...'
-  events.log "* Version #{Iodine::VERSION}"
+  puts 'Puppetmaster starting Iodine...'
+  puts "* Version #{Iodine::VERSION}"
 
   Rack::Handler::Iodine.run(app, { Host: host, Port: port }.merge(options)).join
 end
