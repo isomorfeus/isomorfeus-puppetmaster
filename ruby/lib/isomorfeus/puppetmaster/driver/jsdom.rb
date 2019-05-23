@@ -37,6 +37,7 @@ module Isomorfeus
         def initialize(options = {})
           @app = options.delete(:app)
           @options = options.dup
+          @canvas = @options.delete(:canvas) { false }
           @ignore_https_errors = !!@options.delete(:ignore_https_errors)
           @max_width = @options.delete(:max_width) { VIEWPORT_MAX_WIDTH }
           @max_height = @options.delete(:max_height) { VIEWPORT_MAX_HEIGHT }
@@ -248,7 +249,7 @@ module Isomorfeus
 
         def jsdom_launch
           <<~JAVASCRIPT
-            const canvas = require('canvas')
+            #{"const canvas = require('canvas');" if @canvas}
             const jsdom = require('jsdom');
             const Cookie = jsdom.toughCookie.Cookie;
             const MemoryCookieStore = jsdom.toughCookie.MemoryCookieStore;
