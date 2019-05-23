@@ -37,7 +37,7 @@ Isomorfeus::Puppetmaster.register_server :iodine do |app, port, _host, **options
   puts 'Puppetmaster starting Iodine...'
   puts "* Version #{Iodine::VERSION}"
 
-  Rack::Handler::Iodine.run(app, { Host: host, Port: port }.merge(options)).join
+  Iodine::Rack.run(app, { Host: host, Port: port }.merge(options)).join
 end
 
 Isomorfeus::Puppetmaster.register_server :puma do |app, port, host, **options|
