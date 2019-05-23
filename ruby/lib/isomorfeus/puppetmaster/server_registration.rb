@@ -28,6 +28,7 @@ end
 
 Isomorfeus::Puppetmaster.register_server :iodine do |app, port, host, **options|
   begin
+    require 'iodine'
     require 'iodine/version'
     require 'rack/handler/iodine'
   rescue LoadError
