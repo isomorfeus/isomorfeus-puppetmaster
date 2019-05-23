@@ -21,3 +21,7 @@ end
 Isomorfeus::Puppetmaster.register_driver(:jsdom) do |app|
   Isomorfeus::Puppetmaster::Driver::Jsdom.new(app: app)
 end
+
+Isomorfeus::Puppetmaster.register_driver(:jsdom_canvas) do |app|
+  Isomorfeus::Puppetmaster::Driver::Jsdom.new(app: app, canvas: true)
+end
