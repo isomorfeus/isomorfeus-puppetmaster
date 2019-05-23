@@ -1,3 +1,3 @@
 module Isomorfeus
-  PUPPETMASTER_VERSION = '0.2.4'
+  PUPPETMASTER_VERSION = '0.2.5'
 end
