@@ -35,9 +35,6 @@ Isomorfeus::Puppetmaster.register_server :iodine do |app, port, host, **options|
     raise LoadError, "Unable to load 'iodine' as server."
   end
 
-  puts 'Puppetmaster starting Iodine...'
-  puts "* Version #{Iodine::VERSION}"
-
   Iodine::Rack.run(app, { Host: host, Port: port }.merge(options)).join
 end
 
