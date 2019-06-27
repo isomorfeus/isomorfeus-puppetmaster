@@ -35,7 +35,7 @@ Isomorfeus::Puppetmaster.register_server :iodine do |app, port, host, **options|
     raise LoadError, "Unable to load 'iodine' as server."
   end
 
-  Iodine::Rack.run(app, { Host: host, Port: port }.merge(options)).join
+  Iodine::Rack.run(app, { Host: host, Port: port }.merge(options))
 end
 
 Isomorfeus::Puppetmaster.register_server :puma do |app, port, host, **options|
