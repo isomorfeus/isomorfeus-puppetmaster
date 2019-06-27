@@ -297,7 +297,7 @@ module Isomorfeus
         def node_evaluate_script(node, script, *args)
           await <<~JAVASCRIPT
             var node_handle = #{node.handle};
-            await AllElementHandles[node_handle].executionContext().evaluateHandle((node, arguments) => {
+            handle = await AllElementHandles[node_handle].executionContext().evaluateHandle((node, arguments) => {
               arguments.unshift(node);
               return #{script};
             }, AllElementHandles[node_handle], #{args[1..-1]});
@@ -571,13 +571,7 @@ module Isomorfeus
         def node_style(node, *styles)
           await <<~JAVASCRIPT
             var handle = await AllElementHandles[#{node.handle}].executionContext().evaluateHandle(function(node, styles){
-              var style = window.getComputedStyle(node);
-              if (styles.length > 0) { 
-                return styles.reduce(function(res,name) {
-                  res[name] = style[name];
-                  return res;
-                }, {});
-              } else { return style; }
+              return = window.getComputedStyle(node);
             }, AllElementHandles[#{node.handle}], #{styles});
             LastResult = await handle.jsonValue();
           JAVASCRIPT
