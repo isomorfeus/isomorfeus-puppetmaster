@@ -69,6 +69,35 @@ module Isomorfeus
         @driver.browser
       end
 
+      def await_ruby(ruby_source = '', &block)
+        ruby_source = Isomorfeus::Puppetmaster.block_source_code(&block) if block_given?
+        ruby_source = "#{ruby_source}.then { |result| $promise_result = result; $promise_resolved = true }"
+        compiled_ruby = compile_ruby_source(ruby_source)
+        if compiled_ruby.start_with?('/*')
+          start_of_code = compiled_ruby.index('*/') + 3
+          compiled_ruby = compiled_ruby[start_of_code..-1]
+        end
+        evaluate_script <<~JAVASCRIPT
+          (function(){
+            Opal.gvars.promise_resolved = false;
+            return #{compiled_ruby}
+          })()
+        JAVASCRIPT
+        have_result = false
+        until have_result do
+          have_result = evaluate_script 'Opal.gvars.promise_resolved'
+          sleep 0.1 unless have_result
+        end
+        execute_script <<~JAVASCRIPT
+          var result;
+          if (typeof Opal.gvars.promise_result.$to_n === 'function') { result = Opal.gvars.promise_result.$to_n(); }
+          else { result = Opal.gvars.promise_result };
+          delete Opal.gvars.promise_result;
+          delete Opal.gvars.promise_resolved;
+          return result;
+        JAVASCRIPT
+      end
+
       def evaluate_ruby(ruby_source = '', &block)
         ruby_source = Isomorfeus::Puppetmaster.block_source_code(&block) if block_given?
         compiled_ruby = compile_ruby_source(ruby_source)
