@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'chunky_png'
   s.add_development_dependency 'falcon', '~> 0.30.0'
   s.add_development_dependency 'fastimage'
-  s.add_development_dependency 'iodine', '~> 0.7.31'
+  s.add_development_dependency 'iodine', '~> 0.7.33'
   s.add_development_dependency 'irb'
   s.add_development_dependency 'launchy', '~> 2.0'
   s.add_development_dependency 'nokogiri', '~> 1.10.1'
