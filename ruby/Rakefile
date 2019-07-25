@@ -12,27 +12,27 @@ task :setup do
      Dir.exist?('node_modules/puppeteer-firefox') &&
      Dir.exist?('node_modules/jsdom') &&
      Dir.exist?('node_modules/canvas')
-    `yarn add puppeteer@1.14.0`
+    `yarn add puppeteer@1.19.0`
     `yarn add puppeteer-firefox@0.5.0`
-    `yarn add jsdom@14.0.0`
-    `yarn add canvas@2.4.1`
+    `yarn add jsdom@15.1.1`
+    `yarn add canvas@2.5.0`
   end
 end
 
 RSpec::Core::RakeTask.new(:test) do |t|
   Rake::Task[:setup].invoke
   t.pattern = Dir.glob('spec/drivers/*_spec.rb')
-#  t.rspec_opts = '--format documentation'
-# t.rspec_opts << ' more options'
-#  t.rcov = true
+  # t.rspec_opts = '--format documentation'
+  # t.rspec_opts << ' more options'
+  # t.rcov = true
 end
 
 RSpec::Core::RakeTask.new(:fail) do |t|
   Rake::Task[:setup].invoke
   t.pattern = Dir.glob('spec/drivers/*_spec.rb')
   t.rspec_opts = '--format documentation --fail-fast'
-# t.rspec_opts << ' more options'
-#  t.rcov = true
+  # t.rspec_opts << ' more options'
+  # t.rcov = true
 end
 
 task :default => :test
