@@ -71,7 +71,7 @@ module Isomorfeus
 
       def await_ruby(ruby_source = '', &block)
         ruby_source = Isomorfeus::Puppetmaster.block_source_code(&block) if block_given?
-        ruby_source = "#{ruby_source}.then { |result| $promise_result = result; $promise_resolved = true }"
+        ruby_source = "#{ruby_source}.then { |result| $promise_result = result; $promise_resolved = true }.fail { |result| $promise_result = result; $promise_resolved = true }"
         compiled_ruby = compile_ruby_source(ruby_source)
         if compiled_ruby.start_with?('/*')
           start_of_code = compiled_ruby.index('*/') + 3
@@ -84,7 +84,9 @@ module Isomorfeus
           })()
         JAVASCRIPT
         have_result = false
+        start = Time.now
         until have_result do
+          break if (Time.now - start) > 30
           have_result = evaluate_script 'Opal.gvars.promise_resolved'
           sleep 0.1 unless have_result
         end
