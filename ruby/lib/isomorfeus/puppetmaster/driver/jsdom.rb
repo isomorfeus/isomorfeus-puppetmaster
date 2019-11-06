@@ -280,7 +280,7 @@ module Isomorfeus
                 LastRes = null;
                 LastExecutionFinished = false;
     
-                if (err) { return [null, err.toString() + "\\n" + err.stack]]; }
+                if (err) { return [null, err.toString() + "\n" + err.stack]; }
                 else { return [res, null]; }
     
               } else {
