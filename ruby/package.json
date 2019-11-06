@@ -1,9 +1,8 @@
 {
   "license": "MIT",
   "dependencies": {
-    "canvas": "2.5.0",
-    "jsdom": "15.1.1",
-    "puppeteer": "1.20.0",
-    "puppeteer-firefox": "file:puppeteer-firefox-0.5.0-macos.tgz"
+    "canvas": "2.6.0",
+    "jsdom": "15.2.1",
+    "puppeteer": "2.0.0"
   }
 }

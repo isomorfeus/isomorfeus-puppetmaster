@@ -126,11 +126,9 @@ module Isomorfeus
 
         def document_clear_url_blacklist(document)
           await <<~JAVASCRIPT
-            if (!(BrowserType === 'firefox')) {
-              var cdp_session = await AllPageHandles[#{document.handle}].target().createCDPSession();
-              await cdp_session.send('Network.setBlockedURLs', {urls: []});
-              await cdp_session.detach();
-            }
+            var cdp_session = await AllPageHandles[#{document.handle}].target().createCDPSession();
+            await cdp_session.send('Network.setBlockedURLs', {urls: []});
+            await cdp_session.detach();
           JAVASCRIPT
         end
 
@@ -152,12 +150,7 @@ module Isomorfeus
               }, #{@puppeteer_reaction_timeout});
             });
             AllPageHandles[#{document.handle}].on('response', response_handler);
-            var navigation_watcher;
-            if (BrowserType === 'firefox') {
-              navigation_watcher = AllPageHandles[#{document.handle}].waitFor(1000);
-            } else {
-              navigation_watcher = AllPageHandles[#{document.handle}].waitForNavigation();
-            }
+            var navigation_watcher = AllPageHandles[#{document.handle}].waitForNavigation();
             await AllPageHandles[#{document.handle}].evaluate(function(){ 
               var options = {button: 0, bubbles: true, cancelable: true};
               var node = window;
@@ -290,12 +283,7 @@ module Isomorfeus
               }, #{@puppeteer_reaction_timeout});
             });
             AllPageHandlers[#{document.handle}].on('response', response_handler);
-            var navigation_watcher;
-            if (BrowserType === 'firefox') {
-              navigation_watcher = AllPageHandles[#{document.handle}].waitFor(1000);
-            } else {
-              navigation_watcher = AllPageHandles[#{document.handle}].waitForNavigation();
-            }
+            var navigation_watcher = AllPageHandles[#{document.handle}].waitForNavigation();
             await AllPageHandles[#{document.handle}].evaluate(function(){
               var options = {button: 0, bubbles: true, cancelable: true};
               var node = window;
@@ -589,13 +577,11 @@ module Isomorfeus
             var url = '#{parsed_uri.to_s}';
             new_page.setDefaultTimeout(#{@puppeteer_timeout});
             await new_page.setViewport({width: #{@width}, height: #{@height}});
-            if (!(BrowserType === 'firefox')) {
-              var new_target = new_page.target();
-              var cdp_session = await new_target.createCDPSession();
-              await cdp_session.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: '#{Isomorfeus::Puppetmaster.download_path}'});
-              if (#{@url_blacklist}.length > 0) { await cdp_session.send('Network.setBlockedURLs', {urls: #{@url_blacklist}}); }
-              await cdp_session.detach();
-            }
+            var new_target = new_page.target();
+            var cdp_session = await new_target.createCDPSession();
+            await cdp_session.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: '#{Isomorfeus::Puppetmaster.download_path}'});
+            if (#{@url_blacklist}.length > 0) { await cdp_session.send('Network.setBlockedURLs', {urls: #{@url_blacklist}}); }
+            await cdp_session.detach();
             var page_handle = RegisterPage(new_page); 
             var result_response = null;
             if (url && url !== '') { 
@@ -677,12 +663,7 @@ module Isomorfeus
               }, #{@puppeteer_reaction_timeout});
             });
             AllPageHandles[#{document.handle}].on('response', response_handler);
-            var navigation_watcher;
-            if (BrowserType === 'firefox') {
-              navigation_watcher = AllPageHandles[#{document.handle}].waitFor(1000);
-            } else {
-              navigation_watcher = AllPageHandles[#{document.handle}].waitForNavigation();
-            }
+            var navigation_watcher = AllPageHandles[#{document.handle}].waitForNavigation();
             await AllPageHandles[#{document.handle}].evaluate(function(){
               var options = {button: 2, bubbles: true, cancelable: true};
               var node = window;
@@ -787,11 +768,9 @@ module Isomorfeus
           # https://www.chromium.org/administrators/url-blacklist-filter-format
           @url_blacklist = url_array
           await <<~JAVASCRIPT
-            if (!(BrowserType === 'firefox')) {
-              var cdp_session = await AllPageHandles[#{document.handle}].target().createCDPSession();
-              await cdp_session.send('Network.setBlockedURLs', {urls: #{url_array}});
-              await cdp_session.detach();
-            }
+            var cdp_session = await AllPageHandles[#{document.handle}].target().createCDPSession();
+            await cdp_session.send('Network.setBlockedURLs', {urls: #{url_array}});
+            await cdp_session.detach();
           JAVASCRIPT
         end
 

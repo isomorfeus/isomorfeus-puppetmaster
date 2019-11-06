@@ -60,7 +60,6 @@ module PuppetmasterSpec
     end
 
     it 'synchronises page loads properly' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       @doc.visit '/puppetmaster/index'
       @doc.find_by_content('JS redirect').click
       expect(@doc.html).to include('Hello world')
@@ -450,7 +449,6 @@ module PuppetmasterSpec
       context 'when someone messes with JSON' do
         # mootools <= 1.2.4 replaced the native JSON with it's own JSON that didn't have stringify or parse methods
         it 'works correctly' do
-          skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
           @doc.visit('/puppetmaster/index')
           @doc.execute_script('JSON = {};')
           expect { @doc.find_by_content('JS redirect') }.not_to raise_error
@@ -482,10 +480,6 @@ module PuppetmasterSpec
       end
 
       context 'when selected option is not in optgroup' do
-        before do
-          # @doc.find(:select, 'browser').find(:option, 'Firefox').select_option
-        end
-
         it 'fires the focus event' do
           skip 'todo'
           expect(@doc.find(:css, '#changes_on_focus').text).to eq('puppetmaster')
@@ -1013,7 +1007,6 @@ module PuppetmasterSpec
     end
 
     it 'should submit form' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       @doc.visit('/puppetmaster/send_keys')
       @doc.find('#without_submit_button').dispatch_event('submit')
       expect(@doc.find('#without_submit_button input').value).to eq('Submitted')

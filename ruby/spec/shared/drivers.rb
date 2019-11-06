@@ -448,7 +448,6 @@ module DriverSpec
               return [rect.width, rect.height];
             }();
       JS
-      # firefox shows subpixels
       expect([x, y]).to eq([k, i.to_i])
     end
 
@@ -556,7 +555,6 @@ module DriverSpec
 
     it 'supports rendering the page with different quality settings' do
       # only jpeg supports quality
-      skip 'doesnt work with firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       file1 = Tempfile.new(['screenshot1-', '.jpg'])
       file2 = Tempfile.new(['screenshot1-', '.jpg'])
       file3 = Tempfile.new(['screenshot1-', '.jpg'])
@@ -640,7 +638,6 @@ module DriverSpec
     before { @doc = visit('/puppetmaster/date_fields') }
 
     it 'sets a date via keystrokes' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       input = @doc.find('#date_field')
       input.type_keys :arrow_left, :arrow_left, '02142016'
       expect(input.value).to eq('2016-02-14')
@@ -651,35 +648,30 @@ module DriverSpec
     before { @doc = visit('/puppetmaster/send_keys') }
 
     it 'sends keys to empty input' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       input = @doc.find('#empty_input')
       input.type_keys('Input')
       expect(input.value).to eq('Input')
     end
 
     it 'types to empty input' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       input = @doc.find('#empty_input')
       input.type_keys('Input')
       expect(input.value).to eq('Input')
     end
 
     it 'sends keys to empty textarea' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       input = @doc.find('#empty_textarea')
       input.type_keys('Input')
       expect(input.value).to eq('Input')
     end
 
     it 'sends sequences with modifiers and letters' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       input = @doc.find('#empty_input')
       input.type_keys([:shift, 's', 't'], 'r', 'i', 'n', 'g')
       expect(input.value).to eq('STring')
     end
 
     it 'sends modifiers with sequences' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       input = @doc.find('#empty_input')
       input.type_keys('s', [:shift, 'tring'])
       expect(input.value).to eq('sTRING')
@@ -690,14 +682,12 @@ module DriverSpec
     before { @doc = visit('/puppetmaster/send_keys') }
 
     it 'sends keys to empty contenteditable div' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       input = @doc.find('#empty_div')
       input.type_keys('Input')
       expect(input.text).to eq('Input')
     end
 
     it 'in sequences' do
-      skip 'todo for firefox' if %i[firefox firefox_debug].include?(Isomorfeus::Puppetmaster.driver)
       input = @doc.find('#empty_input')
       input.type_keys([:shift, 's', 't'], 'r', 'i', 'g', :arrow_left, 'n')
       expect(input.value).to eq('STring')

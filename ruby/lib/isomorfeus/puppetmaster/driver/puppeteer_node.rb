@@ -27,12 +27,7 @@ module Isomorfeus
               }, #{@puppeteer_reaction_timeout});
             });
             AllPageHandles[#{node.document.handle}].on('response', response_handler);
-            var navigation_watcher;
-            if (BrowserType === 'firefox') {
-              navigation_watcher = AllPageHandles[#{node.document.handle}].waitFor(1000);
-            } else {
-              navigation_watcher = AllPageHandles[#{node.document.handle}].waitForNavigation();
-            }
+            var navigation_watcher = AllPageHandles[#{node.document.handle}].waitForNavigation();
             await AllElementHandles[#{node.handle}].executionContext().evaluate(function(node){ 
               var options = {button: 0, bubbles: true, cancelable: true};
               var x = #{x ? x : 'null'};
@@ -95,12 +90,7 @@ module Isomorfeus
               }, #{@puppeteer_reaction_timeout});
             });
             AllPageHandles[#{node.document.handle}].on('response', response_handler);
-            var navigation_watcher;
-            if (BrowserType === 'firefox') {
-              navigation_watcher = AllPageHandles[#{node.document.handle}].waitFor(1000);
-            } else {
-              navigation_watcher = AllPageHandles[#{node.document.handle}].waitForNavigation();
-            }
+            var navigation_watcher = AllPageHandles[#{node.document.handle}].waitForNavigation();
             await AllElementHandles[#{node.handle}].executionContext().evaluate(function(node){
               var options = {button: 0, bubbles: true, cancelable: true};
               var x = #{x ? x : 'null'};
@@ -475,12 +465,7 @@ module Isomorfeus
               }, #{@puppeteer_reaction_timeout});
             });
             AllPageHandles[#{node.document.handle}].on('response', response_handler);
-            var navigation_watcher;
-            if (BrowserType === 'firefox') {
-              navigation_watcher = AllPageHandles[#{node.document.handle}].waitFor(1000);
-            } else {
-              navigation_watcher = AllPageHandles[#{node.document.handle}].waitForNavigation();
-            }
+            var navigation_watcher = AllPageHandles[#{node.document.handle}].waitForNavigation();
             await AllElementHandles[#{node.handle}].executionContext().evaluate(function(node){
               var options = {button: 2, bubbles: true, cancelable: true};
               var x = #{x ? x : 'null'};

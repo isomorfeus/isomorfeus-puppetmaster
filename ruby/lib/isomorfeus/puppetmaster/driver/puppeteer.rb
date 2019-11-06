@@ -246,12 +246,6 @@ module Isomorfeus
           @context.eval 'LastExecutionFinished'
         end
 
-        def firefox_require
-          <<~JAVASCRIPT
-            const MasterPuppeteer = require('puppeteer-firefox');
-          JAVASCRIPT
-        end
-
         def get_result
           res, err_msg = @context.eval 'GetLastResult()'
           raise determine_error(err_msg) if err_msg
@@ -282,11 +276,10 @@ module Isomorfeus
         def puppeteer_launch
           # todo target_handle, puppeteer save path
           puppeteer_require = case @browser_type
-                              when :firefox then firefox_require
                               when :chrome then chromium_require
                               when :chromium then chromium_require
                               else
-                                raise "Browser type #{@browser_type} not supported! Browser type must be one of: chrome, firefox."
+                                raise "Browser type #{@browser_type} not supported!"
                               end
           <<~JAVASCRIPT
             #{puppeteer_require}
@@ -370,13 +363,11 @@ module Isomorfeus
                 CurrentBrowser = #{launch_line}
                 var page = (await CurrentBrowser.pages())[0];
                 page.setDefaultTimeout(#{@puppeteer_timeout});
-                if (!(BrowserType === 'firefox')) {
-                  var target = page.target();
-                  var cdp_session = await target.createCDPSession();
-                  await cdp_session.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: '#{Isomorfeus::Puppetmaster.download_path}'});
-                  if (#{@url_blacklist}.length > 0) { await cdp_session.send('Network.setBlockedURLs', {urls: #{@url_blacklist}}); }
-                  await cdp_session.detach();
-                }
+                var target = page.target();
+                var cdp_session = await target.createCDPSession();
+                await cdp_session.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: '#{Isomorfeus::Puppetmaster.download_path}'});
+                if (#{@url_blacklist}.length > 0) { await cdp_session.send('Network.setBlockedURLs', {urls: #{@url_blacklist}}); }
+                await cdp_session.detach();
                 LastResult = RegisterPage(page);
                 LastExecutionFinished = true;
               } catch (err) {
