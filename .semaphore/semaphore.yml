@@ -10,8 +10,8 @@ blocks:
         - name: Ruby
           commands:
             - sudo apt-get -y remove --purge nodejs
-            - nvm install 10.15.3
-            - sem-version ruby 2.5.3
+            - nvm install 12.13.0
+            - sem-version ruby 2.6.5
             - checkout
             - cd ruby
             - bundle install
