@@ -318,4 +318,5 @@ class TestApp < Sinatra::Base
   end
 end
 
+# require 'rack/handler/puma'
 # Rack::Handler::Puma.run TestApp, Port: 8070 if $PROGRAM_NAME == __FILE__
