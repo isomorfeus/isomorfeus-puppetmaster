@@ -1,7 +1,7 @@
 # isomorfeus-puppetmaster
 
 A framework for acceptance tests or simply running tests in a headless browser. 
-Comes with drivers for chromium headless, firefox and jsdom.
+Comes with drivers for chromium headless and jsdom.
 Allows for writing javascript tests in pure ruby.
 
 ### Community and Support
@@ -19,10 +19,9 @@ In Gemfile:
 
 Also requires the following npm modules with recommended versions:
 
-- [puppeteer 1.16.0](https://github.com/GoogleChrome/puppeteer#readme) - for the chromium driver
-- [puppeteer-firefox 0.5.0](https://www.npmjs.com/package/puppeteer-firefox) - for the firefox driver
-- [jsdom 14.0.0](https://github.com/jsdom/jsdom#readme) - for the jsdom driver
-- [canvas 2.4.1](https://github.com/Automattic/node-canvas) - for the jsdom driver (optional)
+- [puppeteer 2.0.0](https://github.com/GoogleChrome/puppeteer#readme) - for the chromium driver
+- [jsdom 15.2.1](https://github.com/jsdom/jsdom#readme) - for the jsdom driver
+- [canvas 2.6.0](https://github.com/Automattic/node-canvas) - for the jsdom driver (optional)
 
 Simply install them in your projects root. Puppetmaster also depends on isomorfeus-speednode, which will be installed automatically.
 Speednode will pickup the node modules then from the projects root node_modules directory.
@@ -33,8 +32,6 @@ Puppetmaster provides these drivers:
 - chromium - a real browser, headless, fast
 - chromium_wsl - as above but with options so it can execute within the Windows Linux WSL
 - chromium_debug - opens a chromium browser window with devtools enabled, useful for debugging tests
-- firefox - real firefox, running headless, not so fast
-- firefox_debug - opens a firefox browser window with devtools enabled, useful for debugging tests
 - jsdom - provides a dom implementation in javascript, can execute javascript in the document, super fast, headless, has certain limitations,
   especially because its not rendering anything (no element bounding box, etc.)
 - jsdom_canvas - jsdom driver with additional support for 'canvas', requires certain libraries to be installed, see: [canvas at github](https://github.com/Automattic/node-canvas)
