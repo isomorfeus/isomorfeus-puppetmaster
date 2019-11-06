@@ -743,7 +743,7 @@ module DriverSpec
       input = @doc.find('#empty_input')
       expect do
         input.type_keys('abc', :blah)
-      end.to raise_error Isomorfeus::Puppetmaster::KeyError, "Unknown key: \"Blah\""
+      end.to raise_error Isomorfeus::Puppetmaster::KeyError
     end
   end
 
