@@ -761,7 +761,7 @@ module Isomorfeus
         end
 
         def document_set_extra_headers(document, headers_hash)
-          await "await AllPageHandles[#{document.handle}].setExtraHTTPHeaders({#{headers_hash.map { |k, v| "'#{k}': '#{v}'" }.join(', ')}});"
+          await "await AllPageHandles[#{document.handle}].setExtraHTTPHeaders(#{Oj.dump(headers_hash, mode: :strict)});"
         end
 
         def document_set_url_blacklist(document, url_array)

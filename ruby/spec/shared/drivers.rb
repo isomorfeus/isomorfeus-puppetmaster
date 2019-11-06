@@ -250,11 +250,9 @@ module DriverSpec
     end
 
     it 'allows headers to be set' do
-      @doc.set_extra_headers(
-        'Xtra' => 'foo=bar',
-        'Host' => 'foo.com'
-      )
+      @doc.set_extra_headers('Xtra' => 'foo=bar', 'Host' => 'foo.com')
       @doc.visit('/puppetmaster/headers')
+      STDERR.puts "body: #{@doc.body.visible_text}"
       expect(@doc.body.visible_text).to include('XTRA: foo=bar')
       expect(@doc.body.visible_text).to include('HOST: foo.com')
     end
@@ -330,10 +328,7 @@ module DriverSpec
       end
 
       it 'does not persist headers across popup windows' do
-        @doc.set_extra_headers(
-          'Xtra' => 'foo=bar',
-          'Host' => 'foo.com'
-        )
+        @doc.set_extra_headers('Xtra' => 'foo=bar', 'Host' => 'foo.com')
         @doc.set_user_agent('foo')
         @doc.visit('/puppetmaster/popup_headers')
         new_doc = @doc.open_document_by do
@@ -346,10 +341,7 @@ module DriverSpec
 
       it 'does set header only in current window' do
         new_doc = @doc.open_new_document
-        @doc.set_extra_headers(
-          'Xtra' => 'foo=bar',
-          'Host' => 'foo.com'
-        )
+        @doc.set_extra_headers('Xtra' => 'foo=bar', 'Host' => 'foo.com')
         @doc.set_user_agent('foo')
 
         @doc.visit('/puppetmaster/headers')
