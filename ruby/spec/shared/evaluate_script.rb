@@ -30,9 +30,10 @@ module PuppetmasterSpec
     end
 
     it 'should support returning elements', requires: %i[js es_args] do
+      skip 'todo'
       @doc = visit('/with_js')
       @doc.find('#change') # ensure page has loaded and element is available
-      el = @oc.evaluate_script("document.getElementById('change')")
+      el = @doc.evaluate_script("document.getElementById('change')")
       expect(el).to be_instance_of(Isomorfeus::Puppetmaster::Node)
       expect(el).to eq(@doc.find(:css, '#change'))
     end
