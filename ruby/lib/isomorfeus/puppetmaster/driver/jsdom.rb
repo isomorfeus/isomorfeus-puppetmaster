@@ -222,7 +222,7 @@ module Isomorfeus
         def determine_error(message)
           if message.include?('Error: certificate has expired')
             Isomorfeus::Puppetmaster::CertificateError.new(message) unless @ignore_https_errors
-          elsif message.include?('Error: getaddrinfo ENOTFOUND')
+          elsif message.include?('Error: getaddrinfo')
             Isomorfeus::Puppetmaster::DNSError.new(message)
           elsif message.include?('Unknown key: ')
             Isomorfeus::Puppetmaster::KeyError.new(message)
