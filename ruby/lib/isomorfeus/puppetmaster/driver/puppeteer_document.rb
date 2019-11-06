@@ -311,7 +311,7 @@ module Isomorfeus
         def document_evaluate_script(document, script, *args)
           await <<~JAVASCRIPT
             LastResult = await AllPageHandles[#{document.handle}].evaluate((arguments) => {
-              return #{script} 
+              return #{script.strip} 
             }, #{args});
           JAVASCRIPT
         end
@@ -319,7 +319,7 @@ module Isomorfeus
         def document_execute_script(document, script, *args)
           await <<~JAVASCRIPT
             LastResult = await AllPageHandles[#{document.handle}].evaluate((arguments) => {
-              #{script} 
+              #{script.strip} 
             }, #{args});
           JAVASCRIPT
         end

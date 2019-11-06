@@ -284,7 +284,7 @@ module Isomorfeus
           @context.eval <<~JAVASCRIPT
             AllDomHandles[#{document.handle}].window.eval(
               "var arguments = #{ "#{args}".gsub('"', '\"') };" +
-              "#{script.gsub('\\', '\\\\\\').gsub('"', '\"').gsub("\n", "\\n")}"
+              "#{script.strip.gsub('\\', '\\\\\\').gsub('"', '\"').gsub("\n", "\\n")}"
             )
           JAVASCRIPT
         rescue ExecJS::ProgramError => e
@@ -295,7 +295,7 @@ module Isomorfeus
           @context.eval <<~JAVASCRIPT
             AllDomHandles[#{document.handle}].window.eval(
               "(function() { var arguments = #{ "#{args}".gsub('"', '\"') };" +
-              "#{script.gsub('\\', '\\\\\\').gsub('"', '\"').gsub("\n", "\\n")}" +
+              "#{script.strip.gsub('\\', '\\\\\\').gsub('"', '\"').gsub("\n", "\\n")}" +
               "})()" 
             )
           JAVASCRIPT
