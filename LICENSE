@@ -19,3 +19,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+Files in ruby/lib/isomorfeus/puppetmaster/rspec and ruby/spec directory originally taken from https://github.com/teamcapybara/capybara:
+
+(The MIT License)
+
+Copyright (c) 2009-2018 Thomas Walpole, Jonas Nicklas
+
+(as above)
