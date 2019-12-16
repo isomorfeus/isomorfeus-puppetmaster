@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.license      = 'MIT'
   s.summary      = 'Acceptance testing for isomorfeus.'
   s.description  = 'Acceptance testing for isomorfeus.'
-
+  s.metadata     = { "github_repo" => "ssh://github.com/isomorfeus/gems" }
   s.files          = `git ls-files -- {lib,LICENSE,README.md}`.split("\n")
   s.require_paths  = ['lib']
 
