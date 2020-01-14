@@ -1,6 +1,32 @@
 # frozen_string_literal: true
 
 module PuppetmasterSpec
+  shared_examples 'document awaits a promise' do
+    before do
+      @doc = open_new_document('/with_opal')
+        # sleep 6000
+    end
+
+    it ', but first check if opal is available' do
+      result = @doc.evaluate_ruby do
+        1 + 1
+      end
+      expect(result).to eq 2
+    end
+
+    it 'even if the code raises' do
+      message = nil
+      begin
+        @doc.await_ruby do
+          raise 'Hello World'
+        end
+      rescue Exception => e
+        message = e.message
+      end
+      expect(message).to eq 'RuntimeError: Hello World'
+    end
+  end
+
   shared_examples 'document and node extra enhanced' do
     before do
       @doc = open_new_document
