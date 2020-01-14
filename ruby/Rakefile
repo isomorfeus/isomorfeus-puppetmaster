@@ -33,5 +33,25 @@ RSpec::Core::RakeTask.new(:fail) do |t|
   # t.rcov = true
 end
 
+task :push_ruby_packages do
+  Rake::Task['push_ruby_packages_to_rubygems'].invoke
+  Rake::Task['push_ruby_packages_to_isomorfeus'].invoke
+  Rake::Task['push_ruby_packages_to_github'].invoke
+end
+
+task :push_ruby_packages_to_rubygems do
+  system("gem push ruby/isomorfeus-react-#{React::VERSION}.gem")
+end
+
+task :push_ruby_packages_to_github do
+  system("gem push --key github --host https://rubygems.pkg.github.com/isomorfeus ruby/isomorfeus-react-#{React::VERSION}.gem")
+end
+
+task :push_ruby_packages_to_isomorfeus do
+  Bundler.with_original_env do
+    system("gem inabox ruby/isomorfeus-react-#{React::VERSION}.gem --host http://localhost:5555/")
+  end
+end
+
 task :default => :test
 
