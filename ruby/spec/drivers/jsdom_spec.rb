@@ -24,6 +24,7 @@ module DriverSpec
 
     it_behaves_like 'document and node'
     # it_behaves_like '#evaluate_script'
+    # it_behaves_like 'document awaits a promise'
     it_behaves_like '#find'
     it_behaves_like '#find_all'
     it_behaves_like 'html'
