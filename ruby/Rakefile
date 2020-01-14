@@ -41,16 +41,16 @@ task :push_ruby_packages do
 end
 
 task :push_ruby_packages_to_rubygems do
-  system("gem push ruby/isomorfeus-puppetmaster-#{Isomorfeus::Puppetmaster::VERSION}.gem")
+  system("gem push ruby/isomorfeus-puppetmaster-#{Isomorfeus::PUPPETMASTER_VERSION}.gem")
 end
 
 task :push_ruby_packages_to_github do
-  system("gem push --key github --host https://rubygems.pkg.github.com/isomorfeus ruby/isomorfeus-puppetmaster-#{Isomorfeus::Puppetmaster::VERSION}.gem")
+  system("gem push --key github --host https://rubygems.pkg.github.com/isomorfeus ruby/isomorfeus-puppetmaster-#{Isomorfeus::PUPPETMASTER_VERSION}.gem")
 end
 
 task :push_ruby_packages_to_isomorfeus do
   Bundler.with_original_env do
-    system("gem inabox ruby/isomorfeus-puppetmaster-#{Isomorfeus::Puppetmaster::VERSION}.gem --host http://localhost:5555/")
+    system("gem inabox ruby/isomorfeus-puppetmaster-#{Isomorfeus::PUPPETMASTER_VERSION}.gem --host http://localhost:5555/")
   end
 end
 
