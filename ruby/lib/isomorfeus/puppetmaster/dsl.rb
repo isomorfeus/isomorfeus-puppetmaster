@@ -20,7 +20,7 @@ module Isomorfeus
       end
 
       def open_new_document(uri = nil)
-        puppetmaster_session.document_open_new_document(uri)
+        puppetmaster_session.document_open_new_document(nil, uri)
       end
 
       def reset_session!
