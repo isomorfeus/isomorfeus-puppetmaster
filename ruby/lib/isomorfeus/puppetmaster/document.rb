@@ -80,7 +80,13 @@ module Isomorfeus
         evaluate_script <<~JAVASCRIPT
           (function(){
             Opal.gvars.promise_resolved = false;
-            return #{compiled_ruby}
+            Opal.await_ruby_exception = null;
+            try {
+              return #{compiled_ruby}
+            } catch (e) {
+              Opal.await_ruby_exception = e;
+              Opal.gvars.promise_resolved = true;
+            }
           })()
         JAVASCRIPT
         have_result = false
@@ -90,14 +96,27 @@ module Isomorfeus
           have_result = evaluate_script 'Opal.gvars.promise_resolved'
           sleep 0.1 unless have_result
         end
-        execute_script <<~JAVASCRIPT
+        result, exception = execute_script <<~JAVASCRIPT
           var result;
-          if (typeof Opal.gvars.promise_result.$to_n === 'function') { result = Opal.gvars.promise_result.$to_n(); }
+          var exception = false;
+          if (Opal.await_ruby_exception) {
+            var e = Opal.await_ruby_exception;
+            exception = { message: e.message, name: e.name, stack: e.stack }
+          } else if (typeof Opal.gvars.promise_result.$to_n === 'function') { 
+            result = Opal.gvars.promise_result.$to_n(); 
+          }
           else { result = Opal.gvars.promise_result };
           delete Opal.gvars.promise_result;
           delete Opal.gvars.promise_resolved;
-          return result;
+          return [result, exception];
         JAVASCRIPT
+        if exception
+          STDERR.puts exception
+          e = Isomorfeus::Puppetmaster::Error.new("#{exception['name']}: #{exception['message']}")
+          e.set_backtrace(exception['stack'])
+          raise e
+        end
+        result
       end
 
       def evaluate_ruby(ruby_source = '', &block)
