@@ -111,7 +111,6 @@ module Isomorfeus
           return [result, exception];
         JAVASCRIPT
         if exception
-          STDERR.puts exception
           e = Isomorfeus::Puppetmaster::Error.new("#{exception['name']}: #{exception['message']}")
           e.set_backtrace(exception['stack'])
           raise e
