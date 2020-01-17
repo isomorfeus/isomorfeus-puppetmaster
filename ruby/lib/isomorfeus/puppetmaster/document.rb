@@ -79,20 +79,27 @@ module Isomorfeus
         end
         evaluate_script <<~JAVASCRIPT
           (function(){
-            Opal.gvars.promise_resolved = false;
-            Opal.await_ruby_exception = null;
-            try {
-              return #{compiled_ruby}
-            } catch (e) {
-              Opal.await_ruby_exception = e;
-              Opal.gvars.promise_resolved = true;
+            fun = function() {
+              if (Opal) {
+                Opal.gvars.promise_resolved = false;
+                Opal.await_ruby_exception = null;
+                try {
+                  return #{compiled_ruby}
+                } catch (e) {
+                  Opal.await_ruby_exception = e;
+                  Opal.gvars.promise_resolved = true;
+                }
+              } else {
+                setTimeout(fun, 100);
+              }
             }
+            fun();
           })()
         JAVASCRIPT
         have_result = false
         start = Time.now
         until have_result do
-          break if (Time.now - start) > 30
+          raise "await_ruby: execution timed out! Is Opal available?" if (Time.now - start) > 30
           have_result = evaluate_script 'Opal.gvars.promise_resolved'
           sleep 0.1 unless have_result
         end
