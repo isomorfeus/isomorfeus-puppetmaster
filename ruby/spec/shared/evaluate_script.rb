@@ -60,6 +60,18 @@ module PuppetmasterSpec
       expect(server_context).to eq('Class')
     end
 
+    it 'should evaluate ruby in the app context and if code raises reraises' do
+      result = nil
+      begin
+        on_server do
+          raise "Hello World Error"
+        end
+      rescue Exception => e
+        result = e.message
+      end
+      expect(result).to eq("RuntimeError: Hello World Error")
+    end
+
     context 'without Opal defined' do
       it 'should evaluate ruby as string' do
         @doc = visit('/with_js')
