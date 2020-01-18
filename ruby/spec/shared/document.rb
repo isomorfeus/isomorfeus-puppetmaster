@@ -585,22 +585,18 @@ module PuppetmasterSpec
       end
 
       it 'fires the keydown event' do
-        skip 'todo' if Isomorfeus::Puppetmaster.driver == :jsdom
         expect(@doc.find('#changes_on_keydown').visible_text).to eq('6')
       end
 
       it 'fires the keyup event' do
-        skip 'todo' if Isomorfeus::Puppetmaster.driver == :jsdom
         expect(@doc.find('#changes_on_keyup').visible_text).to eq('6')
       end
 
       it 'fires the keypress event' do
-        skip 'todo' if Isomorfeus::Puppetmaster.driver == :jsdom
         expect(@doc.find('#changes_on_keypress').visible_text).to eq('6')
       end
 
       it 'fires the focus event' do
-        skip 'todo' if Isomorfeus::Puppetmaster.driver == :jsdom
         expect(@doc.find('#changes_on_focus').visible_text).to eq('Focus')
       end
 
@@ -612,12 +608,10 @@ module PuppetmasterSpec
       end
 
       it 'fires the keydown event before the value is updated' do
-        skip 'todo' if Isomorfeus::Puppetmaster.driver == :jsdom
         expect(@doc.find('#value_on_keydown').visible_text).to eq('Hello')
       end
 
       it 'fires the keyup event after the value is updated' do
-        skip 'todo' if Isomorfeus::Puppetmaster.driver == :jsdom
         expect(@doc.find('#value_on_keyup').visible_text).to eq('Hello!')
       end
 
@@ -1052,12 +1046,10 @@ module PuppetmasterSpec
       end
 
       it 'gets text and retains relevant nbsp and whistpace' do
-        skip 'todo for jsdom' if Isomorfeus::Puppetmaster.driver == :jsdom
         expect(@doc.find('#baz').visible_text).to eq ' baz    '
       end
 
       it 'gets text and retains releveant nbsp and unicode whitespace' do
-        skip 'todo for jsdom' if Isomorfeus::Puppetmaster.driver == :jsdom
         expect(@doc.find('#qux').visible_text).to eq '  　 qux 　  '
       end
     end
