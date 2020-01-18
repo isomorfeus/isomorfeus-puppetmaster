@@ -19,6 +19,8 @@ require 'shared/evaluate_script'
 require 'shared/html'
 
 Isomorfeus::Puppetmaster.download_path = File.join(Dir.pwd, 'download_path_tmp')
+js = Opal::Builder.new.build_str("require 'opal'\nrequire 'opal-browser'", 'puppetmaster_opal_prelude').to_s
+File.write(File.join(__dir__, 'public', 'opal-with-browser.js'), js)
 
 module Isomorfeus
   module Puppetmaster

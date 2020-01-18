@@ -178,7 +178,7 @@ class TestApp < Sinatra::Base
     <<-HTML
       <title>With Opal</title>
       <head>
-        <script src="/opal-with-browser.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/opal-with-browser.js" type="text/javascript" charset="utf-8"></script>
       </head>
       <body>
         <div id="a_div" class="a_class">Div Content</div>
