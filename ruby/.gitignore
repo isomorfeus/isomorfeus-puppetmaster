@@ -45,3 +45,5 @@ yarn.lock
 package-lock.json
 save_path_tmp
 screenshots
+
+spec/public/opal-with-browser.js
