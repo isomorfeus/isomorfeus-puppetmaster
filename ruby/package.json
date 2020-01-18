@@ -1,8 +1,6 @@
 {
   "license": "MIT",
   "dependencies": {
-    "canvas": "2.6.0",
-    "jsdom": "15.2.1",
     "puppeteer": "2.0.0"
   }
 }
