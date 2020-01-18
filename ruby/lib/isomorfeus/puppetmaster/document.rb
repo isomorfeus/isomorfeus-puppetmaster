@@ -100,7 +100,7 @@ module Isomorfeus
         start = Time.now
         until have_result do
           raise "await_ruby: execution timed out! Is Opal available?" if (Time.now - start) > 30
-          have_result = evaluate_script 'Opal.gvars.promise_resolved'
+          have_result = evaluate_script 'if (Opal) { return Opal.gvars.promise_resolved; }'
           sleep 0.1 unless have_result
         end
         result, exception = execute_script <<~JAVASCRIPT
