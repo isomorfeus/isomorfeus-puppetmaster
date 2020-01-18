@@ -9,11 +9,3 @@ end
 Isomorfeus::Puppetmaster.register_driver(:chromium_debug) do |app|
   Isomorfeus::Puppetmaster::Driver::Puppeteer.new(browser_type: :chromium, headless: false, devtools: true, app: app)
 end
-
-Isomorfeus::Puppetmaster.register_driver(:jsdom) do |app|
-  Isomorfeus::Puppetmaster::Driver::Jsdom.new(app: app)
-end
-
-Isomorfeus::Puppetmaster.register_driver(:jsdom_canvas) do |app|
-  Isomorfeus::Puppetmaster::Driver::Jsdom.new(app: app, canvas: true)
-end
