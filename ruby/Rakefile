@@ -50,7 +50,7 @@ end
 
 task :push_ruby_packages_to_isomorfeus do
   Bundler.with_original_env do
-    system("scp isomorfeus-puppetmaster-#{Isomorfeus::PUPPETMASTER_VERSION}.gem.gem iso:~/gems/")
+    system("scp isomorfeus-puppetmaster-#{Isomorfeus::PUPPETMASTER_VERSION}.gem iso:~/gems/")
     system("ssh iso \"bash -l -c 'gem inabox gems/isomorfeus-puppetmaster-#{Isomorfeus::PUPPETMASTER_VERSION}.gem --host http://localhost:5555/'\"")
   end
 end
