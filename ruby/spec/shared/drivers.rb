@@ -223,6 +223,7 @@ module DriverSpec
       before do
         @doc = visit('/')
       end
+
       it 'determines status from the simple response' do
         @doc.visit('/puppetmaster/status/500')
         expect(@doc.response.status).to eq(500)
