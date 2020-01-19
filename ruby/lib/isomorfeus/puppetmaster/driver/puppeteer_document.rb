@@ -320,8 +320,10 @@ module Isomorfeus
                 return [null, {name: err.name, message: err.message, stack: err.stack}]; 
               }
             }, #{args});
-            LastResult = result[0];
-            LastErr = result[1];
+            if (result) {
+              LastResult = result[0];
+              LastErr = result[1];
+            }
           JAVASCRIPT
         end
 
@@ -337,8 +339,10 @@ module Isomorfeus
                 return [null, {name: err.name, message: err.message, stack: err.stack}]; 
               } 
             }, #{args});
-            LastResult = result[0];
-            LastErr = result[1];
+            if (result) {
+              LastResult = result[0];
+              LastErr = result[1];
+            }
           JAVASCRIPT
         end
 
