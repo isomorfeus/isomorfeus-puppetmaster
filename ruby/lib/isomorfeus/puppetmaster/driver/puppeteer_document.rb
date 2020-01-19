@@ -310,17 +310,35 @@ module Isomorfeus
 
         def document_evaluate_script(document, script, *args)
           await <<~JAVASCRIPT
-            LastResult = await AllPageHandles[#{document.handle}].evaluate((arguments) => {
-              return #{script.strip} 
+            var result = await AllPageHandles[#{document.handle}].evaluate((arguments) => {
+              try {
+                var res = (function(arguments) {
+                  return #{script.strip};
+                })(arguments);
+                return [res, null];
+              } catch (err) {
+                return [null, {name: err.name, message: err.message, stack: err.stack}]; 
+              }
             }, #{args});
+            LastResult = result[0];
+            LastErr = result[1];
           JAVASCRIPT
         end
 
         def document_execute_script(document, script, *args)
           await <<~JAVASCRIPT
-            LastResult = await AllPageHandles[#{document.handle}].evaluate((arguments) => {
-              #{script.strip} 
+            var result = await AllPageHandles[#{document.handle}].evaluate((arguments) => {
+              try {
+                var res = (function(arguments) {
+                  #{script.strip};
+                })(arguments);
+                return [res, null];
+              } catch (err) {
+                return [null, {name: err.name, message: err.message, stack: err.stack}]; 
+              } 
             }, #{args});
+            LastResult = result[0];
+            LastErr = result[1];
           JAVASCRIPT
         end
 
@@ -454,7 +472,7 @@ module Isomorfeus
             }
           JAVASCRIPT
           con_messages = messages.map {|m| Isomorfeus::Puppetmaster::ConsoleMessage.new(m)}
-          con_messages.each { |m| raise determine_error(m.text) if m.level == 'error' && !m.text.start_with?('Failed to load resource:') }
+          con_messages.each { |m| raise determine_error({ 'message' => m.text }) if m.level == 'error' && !m.text.start_with?('Failed to load resource:') }
           if response_hash
             response = Isomorfeus::Puppetmaster::Response.new(response_hash)
             document.instance_variable_set(:@response, response)
@@ -491,7 +509,7 @@ module Isomorfeus
             }
           JAVASCRIPT
           con_messages = messages.map {|m| Isomorfeus::Puppetmaster::ConsoleMessage.new(m)}
-          con_messages.each { |m| raise determine_error(m.text) if m.level == 'error' && !m.text.start_with?('Failed to load resource:') }
+          con_messages.each { |m| raise determine_error({ 'message' => m.text }) if m.level == 'error' && !m.text.start_with?('Failed to load resource:') }
           if response_hash
             response = Isomorfeus::Puppetmaster::Response.new(response_hash)
             document.instance_variable_set(:@response, response)
@@ -532,7 +550,7 @@ module Isomorfeus
             }
           JAVASCRIPT
           con_messages = messages.map {|m| Isomorfeus::Puppetmaster::ConsoleMessage.new(m)}
-          con_messages.each { |m| raise determine_error(m.text) if m.level == 'error' && !m.text.start_with?('Failed to load resource:') }
+          con_messages.each { |m| raise determine_error({ 'message' => m.text }) if m.level == 'error' && !m.text.start_with?('Failed to load resource:') }
           if response_hash
             response = Isomorfeus::Puppetmaster::Response.new(response_hash)
             document.instance_variable_set(:@response, response)
@@ -610,7 +628,7 @@ module Isomorfeus
             LastResult = [page_handle, result_response, ConsoleMessages[page_handle]];
           JAVASCRIPT
           con_messages = messages.map {|m| Isomorfeus::Puppetmaster::ConsoleMessage.new(m)}
-          con_messages.each { |m| raise determine_error(m.text) if m.level == 'error' && !m.text.start_with?('Failed to load resource:') }
+          con_messages.each { |m| raise determine_error({ 'message' => m.text }) if m.level == 'error' && !m.text.start_with?('Failed to load resource:') }
           Isomorfeus::Puppetmaster::Document.new(self, handle, Isomorfeus::Puppetmaster::Response.new(response_hash))
         end
 

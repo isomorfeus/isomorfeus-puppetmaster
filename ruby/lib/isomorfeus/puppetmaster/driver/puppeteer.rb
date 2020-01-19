@@ -196,18 +196,16 @@ module Isomorfeus
         def await(script)
           @context.eval <<~JAVASCRIPT
             (async () => {
-              try {
-                LastExecutionFinished = false;
-                LastResult = null;
-                LastErr = null;
-                #{script}
-                LastExecutionFinished = true;
-              } catch(err) {
-                LastResult = null;
-                LastErr = err;
-                LastExecutionFinished = true;
-              }
-            })()
+              LastExecutionFinished = false;
+              LastResult = null;
+              LastErr = null;
+              #{script}
+              LastExecutionFinished = true;
+            })().catch(function(err) {
+              LastResult = null;
+              LastErr = err;
+              LastExecutionFinished = true;
+            })
           JAVASCRIPT
           await_result
         end
@@ -226,20 +224,23 @@ module Isomorfeus
           JAVASCRIPT
         end
 
-        def determine_error(message)
-          if message.include?('net::ERR_CERT_') || message.include?('SEC_ERROR_EXPIRED_CERTIFICATE')
-            Isomorfeus::Puppetmaster::CertificateError.new(message)
-          elsif message.include?('net::ERR_NAME_') || message.include?('NS_ERROR_UNKNOWN_HOST')
-            Isomorfeus::Puppetmaster::DNSError.new(message)
-          elsif message.include?('Unknown key: ')
-            Isomorfeus::Puppetmaster::KeyError.new(message)
-          elsif message.include?('Execution context was destroyed, most likely because of a navigation.')
-            Isomorfeus::Puppetmaster::ExecutionContextError.new(message)
-          elsif message.include?('Evaluation failed: DOMException:') || (message.include?('Evaluation failed:') && (message.include?('is not a valid selector') || message.include?('is not a legal expression')))
-            Isomorfeus::Puppetmaster::DOMException.new(message)
-          else
-            Isomorfeus::Puppetmaster::JavaScriptError.new(message)
-          end
+        def determine_error(error)
+          message = "#{error['name']}: #{error['message']}"
+          exception = if message.include?('net::ERR_CERT_') || message.include?('SEC_ERROR_EXPIRED_CERTIFICATE')
+                        Isomorfeus::Puppetmaster::CertificateError.new(message)
+                      elsif message.include?('net::ERR_NAME_') || message.include?('NS_ERROR_UNKNOWN_HOST')
+                        Isomorfeus::Puppetmaster::DNSError.new(message)
+                      elsif message.include?('Unknown key: ')
+                        Isomorfeus::Puppetmaster::KeyError.new(message)
+                      elsif message.include?('Execution context was destroyed, most likely because of a navigation.')
+                        Isomorfeus::Puppetmaster::ExecutionContextError.new(message)
+                      elsif message.include?('Evaluation failed: DOMException:') || (message.include?('Evaluation failed:') && (message.include?('is not a valid selector') || message.include?('is not a legal expression')))
+                        Isomorfeus::Puppetmaster::DOMException.new(message)
+                      else
+                        Isomorfeus::Puppetmaster::JavaScriptError.new(message)
+                      end
+          exception.set_backtrace(error['stack'])
+          exception
         end
 
         def execution_finished?
@@ -247,8 +248,8 @@ module Isomorfeus
         end
 
         def get_result
-          res, err_msg = @context.eval 'GetLastResult()'
-          raise determine_error(err_msg) if err_msg
+          res, error = @context.eval 'GetLastResult()'
+          raise determine_error(error) if error && !error.empty?
           res
         end
 
@@ -307,11 +308,12 @@ module Isomorfeus
                 LastRes = null;
                 LastExecutionFinished = false;
     
-                if (err) { return [null, err.toString() + "\\n" + err.stack]; }
+                if (err) { return [null, {name: err.name, message: err.message, stack: err.stack}]; }
                 else { return [res, null]; }
     
               } else {
-                return [null, (new Error('Last command did not yet finish execution!')).message];
+                var new_err = new Error('Last command did not yet finish execution!');
+                return [null, {name: new_err.name, message: new_err.message, stack: new_err.stack}];
               }
             };
     
@@ -374,7 +376,10 @@ module Isomorfeus
                 LastErr = err;
                 LastExecutionFinished = true;
               }
-            })();
+            })().catch(function(err) {
+                LastErr = err;
+                LastExecutionFinished = true;
+            });
           JAVASCRIPT
         end
 

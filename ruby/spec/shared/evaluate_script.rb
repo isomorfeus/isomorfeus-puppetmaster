@@ -57,7 +57,7 @@ module PuppetmasterSpec
       expect(val).to eq(10)
       expect(local_constants).not_to include(:TEST_CONST)
       expect(loc_val).to be(nil)
-      expect(server_context).to eq('Class')
+      expect(server_context).to eq('Object')
     end
 
     it 'should evaluate ruby in the app context and if code raises reraises' do
@@ -159,6 +159,19 @@ module PuppetmasterSpec
           $document[my_id].id
         end
         expect(result).to eq('a_div')
+      end
+
+      it 'should evaluate ruby as a block and reraise a exception' do
+        @doc = visit('/with_opal')
+        result = nil
+        begin
+          @doc.evaluate_ruby do
+            raise "Hello World Error"
+          end
+        rescue Exception => e
+          result = e.message
+        end
+        expect(result).to eq('RuntimeError: Hello World Error')
       end
 
       it 'should evaluate ruby isomorphically' do
