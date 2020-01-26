@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'nokogiri', '~> 1.10.1'
   s.add_development_dependency 'os'
   s.add_development_dependency 'pdf-reader', '>= 1.3.3'
-  s.add_development_dependency 'puma', '~> 4.2.1'
+  s.add_development_dependency 'puma', '~> 4.3.1'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.6'
   s.add_development_dependency 'sinatra', '~> 2.0'
