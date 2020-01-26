@@ -109,10 +109,12 @@ module Isomorfeus
           if (Opal.await_ruby_exception) {
             var e = Opal.await_ruby_exception;
             exception = { message: e.message, name: e.name, stack: e.stack }
-          } else if (typeof Opal.gvars.promise_result.$to_n === 'function') { 
-            result = Opal.gvars.promise_result.$to_n(); 
-          }
-          else { result = Opal.gvars.promise_result };
+          } else if (Opal.gvars.promise_result['$respond_to?']('is_a?') && Opal.gvars.promise_result['$is_a?'](Opal.Exception)) {
+            let r = Opal.gvars.promise_result;
+            exception = { message: r.$message(), name: r.$class().$name(), stack: r.$backtrace() }
+          } else if (Opal.gvars.promise_result['$respond_to?']('to_n')) { 
+            result = Opal.gvars.promise_result.$to_n()
+          } else { result = Opal.gvars.promise_result };
           delete Opal.gvars.promise_result;
           delete Opal.gvars.promise_resolved;
           return [result, exception];
